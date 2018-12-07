@@ -1,0 +1,50 @@
+{
+	"nva": [
+		{
+			"userId": "1",
+			"userName": "导航1",
+			"userInfo": [
+				{
+					"id": "1",
+					"name": "名称1"
+				}, {
+					"id": "2",
+					"name": "名称1"
+				}
+			]
+		}, {
+			"userId": "2",
+			"userName": "导航2",
+			"userInfo": [
+				{
+					"id": "1",
+					"name": "名称2"
+				}, {
+					"id": "2",
+					"name": "名称22"
+				}
+			]
+		}, {
+			"userId": "3",
+			"userName": "导航3",
+			"userInfo": [
+				{
+					"id": "1",
+					"name": "名称3"
+				}, {
+					"id": "2",
+					"name": "名称33"
+				}
+			]
+		}, {
+			"userId": "4",
+			"userName": "导航4",
+			"userInfo": [
+				{
+					"id": "1",
+					"name": "名称4"
+				}
+			]
+		}
+	]
+}
