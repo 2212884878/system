@@ -14,6 +14,7 @@ const Main = r => require.ensure([], () => r(require('@/view/Subsystems1/Main'))
 const Product = r => require.ensure([], () => r(require('@/view/Subsystems1/Product')), 'Product')
 const newProduct = r => require.ensure([], () => r(require('@/view/Subsystems1/newProduct')), 'newProduct')
 const editProduct = r => require.ensure([], () => r(require('@/view/Subsystems1/editProduct')), 'editProduct')
+const delProduct = r => require.ensure([], () => r(require('@/view/Subsystems1/delProduct')), 'delProduct')
 
 const Table = r => require.ensure([], () => r(require('@/view/Subsystems1/Table')), 'Table')
 const Form = r => require.ensure([], () => r(require('@/view/Subsystems1/Form')), 'Form')
@@ -61,11 +62,11 @@ const routes = [{
 				}
 			},
 			{
-				path: '/Product',
+				path: '/Product/:id',
 				component: Product,
 				name: 'Product',
 				meta: {
-					title: '产品信息'
+					title: '产品详情'
 				}
 			},
 			{
@@ -82,6 +83,14 @@ const routes = [{
 				name: 'editProduct',
 				meta: {
 					title: '修改产品信息'
+				}
+			},
+			{
+				path: '/delProduct',
+				component: delProduct,
+				name: 'delProduct',
+				meta: {
+					title: '下架产品'
 				}
 			}
 			

@@ -16,7 +16,7 @@
 					<th data-colspan = "2">松下</th>
 				</tr>
 				<tr>
-					<th data-filter-control="input">数量</th>
+					<th data-filter-control="select">数量</th>
 					<th data-filter-control="input">占比</th>
 					<th data-filter-control="input">数量</th>
 					<th data-filter-control="input">占比</th>

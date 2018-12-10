@@ -24,12 +24,6 @@
 						</tr>
 					</thead>
 				</table>
-
-				<section class="pages">
-					<el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage"
-					 :page-sizes="PageSizes" :page-size="PageSize" layout="total, sizes, prev, pager, next, jumper" :total="count">
-					</el-pagination>
-				</section>
 			</el-col>
 		</el-row>
 	</section>
@@ -42,33 +36,17 @@
 			return {
 				list: [],
 				loading: false,
-				json: '',
-				json2: '',
-				currentPage: 1,
-				count: 0,
-				PageSize: 2,
-				PageSizes: [2, 20, 30, 40, 50, 100]
+				json: [],
+				json2: []
 			};
 		},
 		created() {
-			document.title = "修改产品";
+			document.title = "产品下架";
 		},
 		mounted() {
-			this.getGoodsList();
-			this.getGoodsList2();
-			this.SetList(this.currentPage, this.PageSize);
+			this.getList();
 		},
 		methods: {
-			handleSizeChange(val) {
-				this.PageSize = val;
-				this.SetList(this.currentPage, this.PageSize);
-				console.log(`每页 ${val} 条`);
-			},
-			handleCurrentChange(val) {
-				this.currentPage = val;
-				this.SetList(this.currentPage, this.PageSize);
-				console.log(`当前页: ${val}`);
-			},
 			getGoodsList() { //获取产品类型
 				this.$axios.get('../../../static/classId.json').then(res => {
 					this.json = res.data.data;
@@ -79,13 +57,33 @@
 					this.json2 = res.data.data;
 				})
 			},
-			getList(data) { //获取产品TABLE
+			getList() { //获取产品信息列表
 				var that = this;
-				$("#table").bootstrapTable('destroy');
 				$("#table").bootstrapTable({
-					data: data,
+					// url: '/Home/GetDepartment', //请求后台的URL（*）
+					method: 'get', //请求方式（*）
+					sidePagination: "server", //分页方式：client客户端分页，server服务端分页（*）
+					pagination: true,
+					pageNumber: 1, //初始化加载第一页，默认第一页
+					pageSize: 10, //每页的记录行数（*）
+					pageList: [10, 25, 50], //可供选择的每页的行数（*）
+					striped: true, //是否显示行间隔色
+					cache: false, //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+					sortable: true, //是否启用排序
+					sortOrder: "asc", //排序方式
 					showRefresh: true, //是否显示刷新按钮
-					pagination: false,
+					clickToSelect: true, //是否启用点击选中行
+					uniqueId: "ID", //每一行的唯一标识，一般为主键列
+					queryParams: function(params) {
+						//这里的键的名字和控制器的变量名必须一直，这边改动，控制器也需要改成一样的
+						var temp = {
+							rows: params.limit, //页面大小
+							page: (params.offset / params.limit) + 1, //页码
+							sort: params.sort, //排序列名  
+							sortOrder: params.order //排位命令（desc，asc） 
+						};
+						return temp;
+					},
 					columns: [{
 							radio: true
 						},
@@ -131,10 +129,9 @@
 							width: 120,
 							align: 'center',
 							valign: 'middle',
-							formatter: (value, row, index) => {
-								var id = value;
-								var result =
-									"<a href='javascript:;' class='btn btn-xs blue' onclick=\"that.ToRoute('"+id+"')\" title='编辑'><span class='glyphicon glyphicon-pencil'>编辑</span></a>";
+							formatter: (v, r, i) => {
+								var id = v;
+								var result = `<a href='javascript:;' class='btn btn-xs blue' @clcik="ToRoute(${id})" title='下架'><span class='glyphicon glyphicon-pencil'></span></a>`;
 								return result;
 							}
 						}
@@ -142,29 +139,7 @@
 				})
 			},
 			ToRoute(id) {
-				this.$route.push({
-					path: `/Product/${id}`,
-					query: {
-						status: 'edit'
-					}
-				})
-			},
-			SetList(num, size) {
-				let data = {
-					pageNum: num,
-					pageSize: size
-				}
-				this.$axios.get("http://192.168.2.38:6001/product/findListBySign", {
-					params: data
-				}).then(res => {
-					if (res.data.code == 0) {
-						this.list = res.data.data.list || [];
-						this.count = res.data.data.total || 0;
-						this.getList(this.list);
-					} else {
-						this.$message.error(res.data.message);
-					}
-				})
+				this.$route.push({path:`/Product/${id}`,query:{status:'del'}})
 			}
 		}
 	}
@@ -187,12 +162,6 @@
 
 		.text-alginr {
 			text-align: right;
-		}
-
-		.pages {
-			height: 32px;
-			text-align: center;
-			margin-top: 20px;
 		}
 	}
 </style>
