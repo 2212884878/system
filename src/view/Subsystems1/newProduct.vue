@@ -20,7 +20,7 @@
 			<el-row :gutter="20">
 				<el-col :span="12">
 					<el-form-item label="景区ID">
-						<el-input v-model="ruleForm.parkID" disabled></el-input>
+						<el-input v-model="ruleForm.parkId" disabled></el-input>
 					</el-form-item>
 				</el-col>
 				<el-col :span="12">
@@ -172,7 +172,7 @@
 				<el-col :span="12">
 					<el-form-item label="是否允许自提或邮寄">
 						<el-checkbox-group v-model="ruleForm.saleType">
-							<el-checkbox label="是" name="saleType" true-label="1" false-label="0"></el-checkbox>
+							<el-checkbox label="是" name="saleType"></el-checkbox>
 						</el-checkbox-group>
 					</el-form-item>
 				</el-col>
@@ -183,7 +183,7 @@
 				<el-col :span="12">
 					<el-form-item label="是否允许退票" prop="returnSign">
 						<el-checkbox-group v-model="ruleForm.returnSign">
-							<el-checkbox label="是" name="returnSign" true-label="1" false-label="0"></el-checkbox>
+							<el-checkbox label="是" name="returnSign"></el-checkbox>
 						</el-checkbox-group>
 					</el-form-item>
 
@@ -191,7 +191,7 @@
 				<el-col :span="12">
 					<el-form-item label="是否允许重复进出" prop="repeatUseSign">
 						<el-checkbox-group v-model="ruleForm.repeatUseSign">
-							<el-checkbox label="是" name="repeatUseSign" true-label="1" false-label="0"></el-checkbox>
+							<el-checkbox label="是" name="repeatUseSign"></el-checkbox>
 						</el-checkbox-group>
 					</el-form-item>
 				</el-col>
@@ -272,7 +272,7 @@
 
 
 		<el-dialog title="银科产品信息" :visible.sync="dialogVisible" width="80%" center>
-			<table id="table" data-striped="true" data-pagination="true" class="table" data-filter-control="true" data-locale="zh-CN"
+			<!-- <table id="table" data-striped="true" data-pagination="true" class="table" data-filter-control="true" data-locale="zh-CN"
 			 v-loading="loading" element-loading-text="拼命加载数据中" element-loading-spinner="el-icon-loading">
 				<thead>
 					<tr>
@@ -286,16 +286,72 @@
 						<th data-field="isTheatre" data-align="center" data-valign="middle">剧场票</th>
 						<th data-field="productCode" data-align="center" data-valign="middle">门票编码</th>
 					</tr>
+					<tr>
+						<td></td>
+						<td>
+							<el-input v-model="productName" @change="search(currentPage,PageSizes,productName,parkName)"></el-input>
+						</td>
+						<td></td>
+						<td></td>
+						<td>
+							<el-input v-model="parkName" @change="search(currentPage,PageSizes,productName,parkName)"></el-input>
+						</td>
+						<td></td>
+						<td></td>
+						<td></td>
+					</tr>
 				</thead>
-			</table>
+			</table> -->
+
+			<div v-loading="loading" class="tab">
+				<el-table :data="list" border highlight-current-row style="width: 100%" stripe size="medium" @row-click="openDetails"
+				 :row-class-name="tableRowClassName">
+					<el-table-column label="选择" align="center">
+						<el-table-column prop="status" align="center" width="60">
+							<template slot-scope="scope">
+								<!-- <el-radio v-model=""></el-radio> -->
+								<input type="radio" name="radio" ref="radio">
+							</template>
+						</el-table-column>
+					</el-table-column>
+					<el-table-column prop="parkID" label="景区ID" width="100" align="center">
+						<el-table-column prop="parkID" width="100" align="center"></el-table-column>
+					</el-table-column>
+					<el-table-column prop="parkName" label="景区名称" align="center">
+						<el-table-column prop="parkName" align="center">
+							<template slot="header" slot-scope="scope">
+								<el-input v-model="parkName" size="small" placeholder="输入关键字搜索" @keyup.enter.native="search(currentPage,PageSize,parkName,productName)" />
+							</template>
+						</el-table-column>
+					</el-table-column>
+					<el-table-column prop="productType" width="100" label="门票类型" align="center">
+						<el-table-column prop="productType" width="100" align="center"></el-table-column>
+					</el-table-column>
+					<el-table-column prop="productId" width="150" label="门票ID" align="center">
+						<el-table-column prop="productId" width="150" align="center"></el-table-column>
+					</el-table-column>
+					<el-table-column prop="productName" label="门票名称" align="center">
+						<el-table-column prop="productName" align="center">
+							<template slot="header" slot-scope="scope">
+								<el-input v-model="productName" size="small" placeholder="输入关键字搜索" @keyup.enter.native="search(currentPage,PageSize,parkName,productName)" />
+							</template>
+						</el-table-column>
+					</el-table-column>
+					<el-table-column prop="isTheatre" width="100" label="剧场票" align="center">
+						<el-table-column prop="isTheatre" width="100" align="center"></el-table-column>
+					</el-table-column>
+					<el-table-column prop="productCode" label="门票编码" align="center">
+						<el-table-column prop="productCode" align="center"></el-table-column>
+					</el-table-column>
+				</el-table>
 
 
-			<section class="pages">
-				<el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage"
-				 :page-sizes="PageSizes" :page-size="PageSize" layout="total, sizes, prev, pager, next, jumper" :total="count">
-				</el-pagination>
-			</section>
-
+				<section class="pages">
+					<el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage"
+					 :page-sizes="PageSizes" :page-size="PageSize" layout="total, sizes, prev, pager, next, jumper" :total="count">
+					</el-pagination>
+				</section>
+			</div>
 
 			<span slot="footer" class="dialog-footer">
 				<el-button @click="dialogVisible = false">取 消</el-button>
@@ -372,20 +428,21 @@
 				['clean']
 			];
 			return {
-				currentPage: 1,
+				productName: '', //列表过滤字段
+				parkName: '',
+				currentPage: 1, //分页信息
 				count: 0,
 				PageSize: 10,
 				PageSizes: [10, 20, 30, 40, 50, 100],
-				radio: 1,
-				activeName: 'first',
+				radio: false,
+				activeName: 'first', //下面说明tab切换标识
 				activeName2: 'first',
 				loading: true,
-				json: '',
+				json: '', //下拉select json
 				json2: '',
-				count: 0,
-				list: [],
-				rows: [],
-				importFileUrl: 'http://192.168.2.34:2600/staticResource/uploadFile',
+				list: [], //列表数据
+				rows: [], //列表点击选择的数据
+				importFileUrl: 'http://192.168.2.34:2600/staticResource/uploadFile', //上传图片地址
 				editorOption: { //富文本编辑器
 					modules: {
 						toolbar: toolcontext
@@ -395,7 +452,8 @@
 				imgs: '',
 				dialogVisible: false, //显示载入弹框
 				ruleForm: { //表单
-					parkID: '',
+					parkId: '',
+					parkName: '',
 					productCode: '',
 					productName: '',
 					productNameEnglish: '',
@@ -408,11 +466,11 @@
 					pictureId: '',
 					scheduledDays: 30,
 					effectiveDays: 1,
-					returnSign: 0,
+					returnSign: false,
 					returnDays: 3,
 					useBeginTime: '09:00:00',
 					useEndTime: '18:00:00',
-					repeatUseSign: 0,
+					repeatUseSign: false,
 					unitName: '1',
 					UseContent: "",
 					returnContent: "",
@@ -422,11 +480,11 @@
 					returnContentEnglish: "",
 					editContentEnglish: "",
 					remarkEnglisn: "",
-					saleType: 0,
+					saleType: false,
 					commitCount: 2000,
-					subPictureId: [] //子图片ID
+					subPictureIdList: '' //子图片ID
 				},
-				rules: {
+				rules: { //表单验证规则
 					productName: [{
 							required: true,
 							message: '请输入产品名称',
@@ -549,14 +607,17 @@
 			this.getGoodsList2();
 		},
 		methods: {
+			search(i, z, Prn, Pkn) { //列过滤
+				this.Get();
+			},
 			handleSizeChange(val) {
 				this.PageSize = val;
-				// this.SetList(this.currentPage, this.PageSize);
+				this.Get();
 				console.log(`每页 ${val} 条`);
 			},
 			handleCurrentChange(val) {
 				this.currentPage = val;
-				// this.SetList(this.currentPage, this.PageSize);
+				this.Get();
 				console.log(`当前页: ${val}`);
 			},
 			getGoodsList() { //获取产品类型
@@ -569,17 +630,15 @@
 					this.json2 = res.data.data;
 				})
 			},
-			// 时间
-			logTimeChange1(val) {
+			logTimeChange1(val) { // 获取开始时间
 				console.log(val)
 				this.ruleForm.useBeginTime = val;
 			},
-			logTimeChange2(val) {
+			logTimeChange2(val) { // 获取结束时间
 				console.log(val)
 				this.ruleForm.useEndTime = val;
 			},
-			// vue-quill-editor设置长度限制的提示
-			alertValue(e, strValue, decimalNum) {
+			alertValue(e, strValue, decimalNum) { // vue-quill-editor设置长度限制的提示
 				var realLength = 0,
 					len = strValue.length,
 					charCode = -1,
@@ -598,8 +657,7 @@
 					e.quill.deleteText(matchWords, 1, strValue); //保留 strValue 的 前 decimalNum 位字符
 				}
 			},
-			GetList() {
-				//拉取接口
+			GetList() { //拉取接口
 				this.$axios.get("http://192.168.2.28:6079/cashinterface/pull").then(res => {
 					if (res.data.code == 0) {
 						this.count = res.data.data;
@@ -611,28 +669,13 @@
 						this.$message.errer(res.data.message);
 						return;
 					}
+				}).catch(error => {
+					console.log(error)
 				})
 			},
-			SetTable(data) {
-				var that = this;
-				$("#table").bootstrapTable('destroy');
-				$("#table").bootstrapTable({
-					columns: [{
-						radio: true
-					}],
-					data: data,
-					clickToSelect: true,
-					pagination: false,
-					onClickRow: function(row) { //获取row，row就是该整行的内容 row.fiele字典
-						// console.log(row);
-						that.rows = row;
-					}
-				})
-			},
-			SetRuleForm() {
-				console.log(this.rows);
+			SetRuleForm() { //载入弹框确认
 				var that = this.rows;
-				this.ruleForm.parkID = that.parkID; //景区ID
+				this.ruleForm.parkId = that.parkID; //景区ID
 				this.ruleForm.productCode = that.productCode; //门票编码
 				this.ruleForm.productName = that.productName; //产品名称
 
@@ -644,15 +687,21 @@
 				this.ruleForm.classId = that.productType == '00' ? 0 : '';
 				this.ruleForm.typeId = that.isTheatre == '1' ? 6 : 0;
 
+				this.parkName = '';
+				this.productName = '';
+
 				this.dialogVisible = false;
-				// console.log($("#table").bootstrapTable('getSelections')[0])
 			},
 			submitForm(formName) { // 提交表单
 				this.$refs[formName].validate((valid) => {
 					if (valid) {
 						console.log(this.ruleForm);
-						this.$axios.post("http://192.168.2.38:5010/product/save", this.StringDat(this.ruleForm)).then(res => {
-							if (res.data.code == 0) {
+						this.$axios.post("http://192.168.2.38:5010/product/save", this.ruleForm, {
+							headers: {
+								'Content-type': 'application/json'
+							}
+						}).then(res => {
+							if (res.data.code == 200) {
 								this.$message({
 									message: res.data.message,
 									type: 'success'
@@ -663,6 +712,8 @@
 									type: 'warning'
 								});
 							}
+						}).catch(error => {
+							console.log(error)
 						})
 
 						console.log('submit!');
@@ -685,6 +736,10 @@
 				this.ruleForm.returnContentEnglish = "";
 				this.ruleForm.editContentEnglish = "";
 				this.ruleForm.remarkEnglisn = "";
+				this.parkName = '';
+				this.productName = '';
+				this.imgs = "";
+				this.ruleForm.subPictureId = "";
 				this.$refs[formName].resetFields();
 			},
 			PictureIdz(files, fileList) {
@@ -694,18 +749,14 @@
 				});
 			},
 			handleAvatarSuccess2(res, file) { //上传子图片
-				// this.ruleForm.pictureId = URL.createObjectURL(file.raw);
 				console.log(file)
-				if (this.ruleForm.subPictureId.indexOf(file.response.data.id) === -1) {
-					var Zid = file.response.data.id;
-					var subId = this.ruleForm.subPictureId;
-					this.imgs = subId.length > 0 ? this.imgs + '-' + Zid : Zid;
-					this.ruleForm.subPictureId.push(Zid);
-				}
-				console.log(this.ruleForm.subPictureId)
+				var Zid = file.response.data.id;
+				var subId = this.ruleForm.subPictureIdList;
+				this.imgs = subId.length > 0 ? this.imgs + ',' + Zid : Zid;
+				this.ruleForm.subPictureIdList = this.imgs;
+				console.log(this.ruleForm.subPictureIdList)
 			},
 			handleAvatarSuccess3(res, file) { //上传图片
-				// this.ruleForm.pictureId = URL.createObjectURL(file.raw);
 				this.ruleForm.pictureId = file.response.data.id;
 				console.log(this.ruleForm.pictureId)
 			},
@@ -723,32 +774,51 @@
 					this.$message.error('上传图片大小不能超过 2MB!');
 				}
 				return extension || extension2 || extension3 || extension4 && isLt2M
+			},
+			Get() { //获取表格数据
+				let data = {
+					pageNum: this.currentPage,
+					pageSize: this.PageSize,
+					productName: this.productName || '',
+					parkName: this.parkName || ''
+				}
+				this.$axios.get("http://192.168.2.28:6079/cashinterface-mucon/product/get", {
+					params: data
+				}).then(res => {
+					if (res.data.code == 200) {
+						this.list = res.data.data.list;
+						this.count = res.data.data.total;
+						console.log(this.list);
+					} else {
+						this.$message.error(res.data.message);
+						return;
+					}
+				}).catch(error => {
+					console.log(error)
+				})
+			},
+			tableRowClassName({
+				row,
+				rowIndex
+			}) { //把每一行的索引放进row
+				row.index = rowIndex;
+			},
+			openDetails(row, event, column) { //单击表格一行获取数据
+				document.getElementsByName("radio")[row.index].setAttribute("checked", true)
+				this.rows = row;
 			}
 		},
 		watch: {
 			dialogVisible(val) { //载入产品信息表
 				if (val) {
-					let data = {
-						pageNum: this.currentPage,
-						pageSize: this.PageSize
-					}
-					this.$axios.get("http://192.168.2.28:6079/cashinterface/product/get", {
-						params: data
-					}).then(res => {
-						if (res.data.code == 0) {
-							this.list = res.data.data;
-							this.count = 30;
-							this.SetTable(this.list);
-						} else {
-							this.$message.errer(res.data.message);
-							return;
-						}
-					})
+					this.Get();
 					setTimeout(() => {
 						this.loading = false;
 					}, 1000);
 				} else {
 					this.loading = true;
+					this.parkName = '';
+					this.productName = '';
 				}
 			}
 		},
@@ -812,6 +882,17 @@
 			}
 
 		}
+	}
 
+	.tab .el-table th div.cell,
+	.tab .el-table td div.cell {
+		height: 40px;
+		line-height: 40px;
+	}
+
+	.tab .el-table th div.el-input {
+		padding-left: 0;
+		padding-right: 0;
+		// line-height: 28px;
 	}
 </style>

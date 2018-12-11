@@ -85,19 +85,19 @@
 			<!-- 图片 -->
 			<el-form-item label="图片资料ID" prop="pictureId">
 				<el-input v-model="ruleForm.pictureId" disabled></el-input>
-				<el-upload class="avatar-uploader" :action="importFileUrl" :show-file-list="false" :on-success="handleAvatarSuccess3"
+				<!-- <el-upload class="avatar-uploader" :action="importFileUrl" :show-file-list="false" :on-success="handleAvatarSuccess3"
 				 :before-upload="beforeAvatarUpload" v-if="status == 'edit'">
 					<i class="el-icon-circle-plus">上传图片</i>
-				</el-upload>
+				</el-upload> -->
 			</el-form-item>
 
 			<!-- 子图片Id -->
 			<el-form-item label="子图片ID">
 				<el-input v-model="imgs" disabled></el-input>
-				<el-upload class="avatar-uploader" :action="importFileUrl" :show-file-list="false" :on-success="handleAvatarSuccess2"
+				<!-- <el-upload class="avatar-uploader" :action="importFileUrl" :show-file-list="false" :on-success="handleAvatarSuccess2"
 				 :before-upload="beforeAvatarUpload" :limit="3" :on-exceed="PictureIdz" multiple v-if="status == 'edit'">
 					<i class="el-icon-circle-plus">上传图片</i>
-				</el-upload>
+				</el-upload> -->
 			</el-form-item>
 
 			<!-- 价格 -->
@@ -188,10 +188,10 @@
 							 format="HH:mm:ss" value-format="HH:mm:ss" placeholder="开始时间" @change="logTimeChange1">
 							</el-time-picker>
 						</el-form-item>
-						
+
 						<el-form-item prop="useBeginTime" v-else>
 							<el-time-picker arrow-control v-model="ruleForm.useBeginTime" :picker-options="{selectableRange: '06:00:00 - 20:00:00'}"
-							format="HH:mm:ss" value-format="HH:mm:ss" placeholder="开始时间" @change="logTimeChange1" disabled>
+							 format="HH:mm:ss" value-format="HH:mm:ss" placeholder="开始时间" @change="logTimeChange1" disabled>
 							</el-time-picker>
 						</el-form-item>
 					</el-form-item>
@@ -203,10 +203,10 @@
 							 format="HH:mm:ss" value-format="HH:mm:ss" placeholder="结束时间" @change="logTimeChange2">
 							</el-time-picker>
 						</el-form-item>
-						
+
 						<el-form-item prop="useEndTime" v-else>
 							<el-time-picker arrow-control v-model="ruleForm.useEndTime" :picker-options="{selectableRange: '06:00:00 - 20:00:00'}"
-							format="HH:mm:ss" value-format="HH:mm:ss" placeholder="结束时间" @change="logTimeChange2" disabled>
+							 format="HH:mm:ss" value-format="HH:mm:ss" placeholder="结束时间" @change="logTimeChange2" disabled>
 							</el-time-picker>
 						</el-form-item>
 					</el-form-item>
@@ -219,7 +219,7 @@
 					<el-form-item label="手机号最多可购张数" prop="effectiveDays" v-if="status == 'edit'">
 						<el-input v-model="ruleForm.commitCount"></el-input>
 					</el-form-item>
-					
+
 					<el-form-item label="手机号最多可购张数" prop="effectiveDays" v-else>
 						<el-input v-model="ruleForm.commitCount" disabled></el-input>
 					</el-form-item>
@@ -229,7 +229,7 @@
 						<el-checkbox-group v-model="ruleForm.saleType" v-if="status == 'edit'">
 							<el-checkbox label="是" name="saleType" true-label="1" false-label="0"></el-checkbox>
 						</el-checkbox-group>
-						
+
 						<el-checkbox-group v-model="ruleForm.saleType" v-else>
 							<el-checkbox label="是" name="saleType" true-label="1" false-label="0" disabled></el-checkbox>
 						</el-checkbox-group>
@@ -268,25 +268,29 @@
 					<el-tabs v-model="activeName" type="border-card">
 						<el-tab-pane label="使用说明" name="first">
 							<el-form-item label="使用说明" class="lhn">
-								<quill-editor ref="UseContent" v-model="ruleForm.UseContent" :options="editorOption" @change="alertValue($event,ruleForm.UseContent,2000)" @ready="onEditorReady($event)">
+								<quill-editor ref="UseContent" v-model="ruleForm.UseContent" :options="editorOption" @change="alertValue($event,ruleForm.UseContent,2000)"
+								 @ready="onEditorReady($event)">
 								</quill-editor>
 							</el-form-item>
 						</el-tab-pane>
 						<el-tab-pane label="退款说明" name="second">
 							<el-form-item label="退款说明" class="lhn">
-								<quill-editor ref="returnContent" v-model="ruleForm.returnContent" :options="editorOption" @change="alertValue($event,ruleForm.UseContent,2000)" @ready="onEditorReady($event)">
+								<quill-editor ref="returnContent" v-model="ruleForm.returnContent" :options="editorOption" @change="alertValue($event,ruleForm.UseContent,2000)"
+								 @ready="onEditorReady($event)">
 								</quill-editor>
 							</el-form-item>
 						</el-tab-pane>
 						<el-tab-pane label="改签说明" name="third">
 							<el-form-item label="改签说明" class="lhn">
-								<quill-editor ref="editContent" v-model="ruleForm.editContent" :options="editorOption" @change="alertValue($event,ruleForm.UseContent,2000)" @ready="onEditorReady($event)">
+								<quill-editor ref="editContent" v-model="ruleForm.editContent" :options="editorOption" @change="alertValue($event,ruleForm.UseContent,2000)"
+								 @ready="onEditorReady($event)">
 								</quill-editor>
 							</el-form-item>
 						</el-tab-pane>
 						<el-tab-pane label="备注" name="fourth">
 							<el-form-item label="备注" class="lhn">
-								<quill-editor ref="remark" v-model="ruleForm.remark" :options="editorOption" @change="alertValue($event,ruleForm.UseContent,2000)" @ready="onEditorReady($event)">
+								<quill-editor ref="remark" v-model="ruleForm.remark" :options="editorOption" @change="alertValue($event,ruleForm.UseContent,2000)"
+								 @ready="onEditorReady($event)">
 								</quill-editor>
 							</el-form-item>
 						</el-tab-pane>
@@ -302,7 +306,8 @@
 					<el-tabs v-model="activeName2" type="border-card">
 						<el-tab-pane label="Directions for use" name="first">
 							<el-form-item label="Directions for use" class="lhn">
-								<quill-editor ref="useContentEnglish" v-model="ruleForm.useContentEnglish" :options="editorOption" @change="alertValue($event,ruleForm.UseContent,2000)" @ready="onEditorReady($event)">
+								<quill-editor ref="useContentEnglish" v-model="ruleForm.useContentEnglish" :options="editorOption" @change="alertValue($event,ruleForm.UseContent,2000)"
+								 @ready="onEditorReady($event)">
 								</quill-editor>
 							</el-form-item>
 						</el-tab-pane>
@@ -315,13 +320,15 @@
 						</el-tab-pane>
 						<el-tab-pane label="Endorsed to illustrate" name="third">
 							<el-form-item label="Endorsed to illustrate" class="lhn">
-								<quill-editor ref="editContentEnglish" v-model="ruleForm.editContentEnglish" :options="editorOption" @change="alertValue($event,ruleForm.UseContent,2000)" @ready="onEditorReady($event)">
+								<quill-editor ref="editContentEnglish" v-model="ruleForm.editContentEnglish" :options="editorOption" @change="alertValue($event,ruleForm.UseContent,2000)"
+								 @ready="onEditorReady($event)">
 								</quill-editor>
 							</el-form-item>
 						</el-tab-pane>
 						<el-tab-pane label="note" name="fourth">
 							<el-form-item label="note" class="lhn">
-								<quill-editor ref="remarkEnglisn" v-model="ruleForm.remarkEnglisn" :options="editorOption" @change="alertValue($event,ruleForm.UseContent,2000)" @ready="onEditorReady($event)">
+								<quill-editor ref="remarkEnglisn" v-model="ruleForm.remarkEnglisn" :options="editorOption" @change="alertValue($event,ruleForm.UseContent,2000)"
+								 @ready="onEditorReady($event)">
 								</quill-editor>
 							</el-form-item>
 						</el-tab-pane>
@@ -338,7 +345,7 @@
 				<template v-else>
 					<el-button type="primary" @click="submitFormDel('ruleForm')">产品下架</el-button>
 				</template>
-				
+
 			</el-form-item>
 		</el-form>
 
@@ -410,14 +417,14 @@
 				['clean']
 			];
 			return {
-				id: this.$route.params.id,
-				status: this.$route.query.status,
+				id: this.$route.params.id, //产品ID
+				status: this.$route.query.status, //修改标识
 				loading: false,
-				activeName: 'first',
+				activeName: 'first', //下面说明tab切换标识
 				activeName2: 'first',
-				json: '',
+				json: '', //下拉select json
 				json2: '',
-				importFileUrl: 'http://192.168.2.34:2600/staticResource/uploadFile',
+				importFileUrl: 'http://192.168.2.34:2600/staticResource/uploadFile', //上传图片地址
 				editorOption: { //富文本编辑器
 					modules: {
 						toolbar: toolcontext
@@ -425,8 +432,10 @@
 					placeholder: '最多输入2000字节'
 				},
 				imgs: '',
+				list: [],
 				ruleForm: { //表单
-					parkID: '',
+					parkId: '',
+					parkName: '',
 					productCode: '',
 					productName: '',
 					productNameEnglish: '',
@@ -439,11 +448,11 @@
 					pictureId: '',
 					scheduledDays: 30,
 					effectiveDays: 1,
-					returnSign: 0,
+					returnSign: false,
 					returnDays: 3,
 					useBeginTime: '09:00:00',
 					useEndTime: '18:00:00',
-					repeatUseSign: 0,
+					repeatUseSign: false,
 					unitName: '1',
 					UseContent: "",
 					returnContent: "",
@@ -453,9 +462,9 @@
 					returnContentEnglish: "",
 					editContentEnglish: "",
 					remarkEnglisn: "",
-					saleType: 0,
+					saleType: false,
 					commitCount: 2000,
-					subPictureId: [] //子图片ID
+					subPictureIdList: '' //子图片ID
 				},
 				rules: {
 					productName: [{
@@ -576,7 +585,7 @@
 			quillEditor
 		},
 		methods: {
-			onEditorReady(editor) {//富文本禁用
+			onEditorReady(editor) { //富文本禁用
 				this.status == 'del' ? editor.enable(false) : '';
 			},
 			getGoodsList() { //获取产品类型
@@ -622,11 +631,23 @@
 				this.$refs[formName].validate((valid) => {
 					if (valid) {
 						console.log(this.ruleForm);
-// 						this.$axios.post("http://192.168.2.38:5010/product/save", this.StringDat(this.ruleForm)).then(res => {
-// 							console.log(res)
-// 						})
-
-						console.log('submit!');
+						this.$axios.put("http://192.168.2.38:5010/product/update", this.ruleForm, {
+							headers: {
+								'Content-type': 'application/json'
+							}
+						}).then(res => {
+							if (res.data.code == 200) {
+								this.$message({
+									message: res.data.message,
+									type: 'success'
+								});
+							} else {
+								this.$message({
+									message: res.data.message,
+									type: 'warning'
+								});
+							}
+						})
 					} else {
 						console.log('error submit!!');
 						return false;
@@ -634,7 +655,7 @@
 				});
 			},
 			submitFormDel(formName) { //删除产品（下架）
-				
+
 			},
 			resetForm(formName) { //重置表单
 				this.ruleForm.parkID = "";
@@ -653,54 +674,36 @@
 				this.ruleForm.subPictureId = "";
 				this.$refs[formName].resetFields();
 			},
-			PictureIdz(files, fileList) {
-				this.$message({
-					message: "最多上传3个图片",
-					type: 'warning'
-				});
+			GetFinnd() { //根据产品ID查询
+				this.$axios.get("http://192.168.2.38:5010/product/finnd/" + this.id).then(res => {
+					if (res.data.code == 200) {
+						this.list = res.data.data.list;
+						this.setFrom();
+					} else {
+						this.$message.error(res.data.message);
+					}
+				}).catch(error => {
+					console.log(error)
+				})
 			},
-			handleAvatarSuccess2(res, file) { //上传子图片
-				// this.ruleForm.pictureId = URL.createObjectURL(file.raw);
-				console.log(file)
-				if (this.ruleForm.subPictureId.indexOf(file.response.data.id) === -1) {
-					var Zid = file.response.data.id;
-					var subId = this.ruleForm.subPictureId;
-					this.imgs = subId.length > 0 ? this.imgs + '-' + Zid : Zid;
-					this.ruleForm.subPictureId.push(Zid);
-				}
-				console.log(this.ruleForm.subPictureId)
-			},
-			handleAvatarSuccess3(res, file) { //上传图片
-				// this.ruleForm.pictureId = URL.createObjectURL(file.raw);
-				this.ruleForm.pictureId = file.response.data.id;
-				console.log(this.ruleForm.pictureId)
-			},
-			beforeAvatarUpload(file) { //上传图片大小限制
-				const extension = file.name.split('.')[1] === 'jpg'
-				const extension2 = file.name.split('.')[1] === 'gif'
-				const extension3 = file.name.split('.')[1] === 'bmp'
-				const extension4 = file.name.split('.')[1] === 'png'
-				const isLt2M = file.size / 1024 / 1024 < 2;
-
-				if (!extension && !extension2 && !extension3 && !extension4) {
-					this.$message.error('上传照片只能是 jpg、gif、bmp、png 格式!');
-				}
-				if (!isLt2M) {
-					this.$message.error('上传图片大小不能超过 2MB!');
-				}
-				return extension || extension2 || extension3 || extension4 && isLt2M
+			setFrom() { //赋值查询出来的数据
+				var list = this.list;
+				list.forEach((v, k) => {
+					this.ruleForm[k] = v;
+				})
 			}
 		},
 		mounted() {
 			this.getGoodsList();
 			this.getGoodsList2();
+			this.GetFinnd();
 			console.log(`状态:${this.status} ID:${this.id}`)
 		},
 		created() {
 			document.title = "产品详情";
 		},
-		watch:{
-			
+		watch: {
+
 		}
 	}
 </script>
