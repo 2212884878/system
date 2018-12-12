@@ -6,7 +6,7 @@
 					<!-- <li v-for="item in list">
 						<router-link :to="{path:'/Sub1Index'}"><img :src="item.picPath" :alt="item.systemname"/><p>{{item.systemname}}</p></router-link>
 					</li> -->
-					<li><router-link :to="{path:'/Sub1Index',query:{name:'票务管理子系统'}}"><img src="../../assets/active-bg1.png"/><p>票务管理子系统</p></router-link></li>
+					<li><router-link :to="{path:'/SubIndex',query:{name:'票务管理子系统'}}"><img src="../../assets/active-bg1.png"/><p>票务管理子系统</p></router-link></li>
 					<li><router-link :to="{path:'/home'}"><img src="../../assets/active-bg1.png"/><p>微信管理子系统</p></router-link></li>
 					<li><router-link :to="{path:'/home'}"><img src="../../assets/active-bg1.png"/><p>APP管理子系统</p></router-link></li>
 					<li><router-link :to="{path:'/home'}"><img src="../../assets/active-bg1.png"/><p>用户管理子系统</p></router-link></li>

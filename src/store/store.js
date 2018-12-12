@@ -11,7 +11,10 @@ const store = new Vuex.Store({
 		token: '',
 		uid: '',
 		visitedViews: [], //存放所有浏览过的且不重复的路由数据
-		cachedViews: []
+		cachedViews: [],
+		typeID: '',
+		classID: '',
+		DayType: ''
 	},
 	getters: {
 		visitedViews: state => state.visitedViews
@@ -19,7 +22,7 @@ const store = new Vuex.Store({
 	mutations: {
 		//初始化用户信息
 		INIT_USER(state) {
-			if(localStorage.getItem('token')) {
+			if (localStorage.getItem('token')) {
 				state.token = localStorage.getItem('token')
 				state.uid = localStorage.getItem('uid')
 			}
@@ -43,24 +46,36 @@ const store = new Vuex.Store({
 			localStorage.removeItem("token");
 			localStorage.removeItem("uid");
 		},
+		GetTypeId(state, data) { //产品分类
+			localStorage.setItem('typeID', data)
+			state.typeID = data
+		},
+		GetClassId(state, data) { //产品类型
+			localStorage.setItem('classID', data)
+			state.classID = data
+		},
+		GetDayType(state, data) { //节假日类型
+			localStorage.setItem('DayType', data)
+			state.DayType = data
+		},
 		ADD_VISITED_VIEWS: (state, view) => {
-			if(state.visitedViews.some(v => v.path === view.path)) return
+			if (state.visitedViews.some(v => v.path === view.path)) return
 			state.visitedViews.push(Object.assign({}, view, {
 				title: view.meta.title || 'no-name'
 			}))
-			if(!view.meta.noCache) {
+			if (!view.meta.noCache) {
 				state.cachedViews.push(view.name)
 			}
 		},
 		DEL_VISITED_VIEWS: (state, view) => {
-			for(const [i, v] of state.visitedViews.entries()) {
-				if(v.path === view.path) {
+			for (const [i, v] of state.visitedViews.entries()) {
+				if (v.path === view.path) {
 					state.visitedViews.splice(i, 1)
 					break
 				}
 			}
-			for(const i of state.cachedViews) {
-				if(i === view.name) {
+			for (const i of state.cachedViews) {
+				if (i === view.name) {
 					const index = state.cachedViews.indexOf(i)
 					state.cachedViews.splice(index, 1)
 					break
@@ -68,14 +83,14 @@ const store = new Vuex.Store({
 			}
 		},
 		DEL_OTHERS_VIEWS: (state, view) => {
-			for(const [i, v] of state.visitedViews.entries()) {
-				if(v.path === view.path) {
+			for (const [i, v] of state.visitedViews.entries()) {
+				if (v.path === view.path) {
 					state.visitedViews = state.visitedViews.slice(i, i + 1)
 					break
 				}
 			}
-			for(const i of state.cachedViews) {
-				if(i === view.name) {
+			for (const i of state.cachedViews) {
+				if (i === view.name) {
 					const index = state.cachedViews.indexOf(i)
 					state.cachedViews = state.cachedViews.slice(index, i + 1)
 					break
@@ -119,8 +134,34 @@ const store = new Vuex.Store({
 				commit('DEL_ALL_VIEWS')
 				resolve([...state.visitedViews])
 			})
-		}
-
+		},
+		SetTypeID(context) {
+			axios({
+				method: 'get',
+				url: '../../../static/typeId.json'
+			}).then((res) => {
+				let list = res.data.data;
+				context.commit('GetTypeId', list);
+			});
+		},
+		SetClassID(context) {
+			axios({
+				method: 'get',
+				url: '../../../static/classId.json'
+			}).then((res) => {
+				let list = res.data.data;
+				context.commit('GetClassId', list);
+			});
+		},
+		SetDayType(context) {
+			axios({
+				method: 'get',
+				url: '../../../static/DayType.json'
+			}).then((res) => {
+				let list = res.data.data;
+				context.commit('GetDayType', list);
+			});
+		},
 	}
 })
 

@@ -1,9 +1,14 @@
 <template>
+	<!--
+    	作者：lixiaoyi
+    	时间：2018-12-12
+    	描述：票务管理子系统
+    -->
 	<div id="Sub1Index">
 		<el-container>
 			<!--导航-->
 			<el-aside width="200px">
-				<div class="loge">VUEADMIN</div>
+				<div class="loge">{{systemName}}</div>
 				<!--
               	作者：lixiaoyi
               	时间：2018-11-19
@@ -14,7 +19,7 @@
 					<template v-for="(item,index) in NewList">
 						<el-submenu :index="index+''">
 							<template slot="title"><i class="el-icon-menu"></i>{{item.title}}</template>
-							<el-menu-item v-for="child in item[0]" :index="child.url" :key="child.url"><i class="el-icon-setting"></i>{{child.text}}</el-menu-item>
+							<el-menu-item v-for="child in item[0]" :index="child.url" :key="child.path"><i class="el-icon-setting"></i>{{child.text}}</el-menu-item>
 						</el-submenu>
 					</template>
 				</el-menu>
@@ -89,20 +94,25 @@
 					list[k] = Array(v);
 					list[k]['title'] = v[0].grouptext;
 				})
+				console.log(list)
 				return list;
 			},
 			defaultActive() {
-				console.log(this.$route.path.split('/').reverse()[0])
 				return this.$route.path.split('/').reverse()[0];
 			}
 		},
 		mounted() {
-			if (!sessionStorage.getItem("systemName")) {
+			if (sessionStorage.getItem("systemName") == 'undefined') {
+				alert(this.$route.query.name)
 				sessionStorage.setItem("systemName", this.$route.query.name);
 			}
+			
 			this.systemName = sessionStorage.getItem("systemName");
 			this.height = document.documentElement.clientHeight - 120;
 			this.getNav();
+			this.$store.dispatch('SetTypeID')
+			this.$store.dispatch('SetClassID')
+			this.$store.dispatch('SetDayType')
 		},
 		methods: {
 			qite() {
@@ -118,22 +128,27 @@
 			handleselect(a, b) {
 				console.log(a, b);
 			},
-			//获取导航菜单
 			getNav() {
-				let data = {
-					userId: this.uid,
-					systemName: this.systemName
-				}
-				this.$axios.get("http://192.168.2.29:2520/nav/findNav", {
-					params: data
-				}).then((res) => {
-					if (res.data.code === 200) {
-						this.items = res.data.data;
-					} else {
-						this.$message.error("出错");
-						return;
+				if(this.uid && this.systemName){//获取导航菜单
+					let data = {
+						userId: this.uid,
+						systemName: this.systemName
 					}
-				})
+					this.$axios.get("http://192.168.2.29:2080/theMenu/findNav", {
+						params: data
+					}).then((res) => {
+						if (res.data.code === 200) {
+							this.items = res.data.data;
+						} else {
+							this.$message.error("出错");
+							return;
+						}
+					}).catch(error => {
+						console.log(error)
+					})
+				}else{
+					this.$message.error("没登录");
+				}
 			}
 		}
 	}

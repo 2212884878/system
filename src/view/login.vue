@@ -67,7 +67,7 @@
 						userPwd: this.password
 					}
 					
-					this.$axios.post('http://192.168.2.29:2520/operator/isLogIn',this.StringDat(data)).then((res) => {
+					this.$axios.post('http://192.168.2.29:2060/user/isLogIn',this.StringDat(data)).then((res) => {
 						var data = res.data.data;
 						if(res.data.code === 200) {
 							this.$store.commit("SAVE_TOKEN", data.name);  

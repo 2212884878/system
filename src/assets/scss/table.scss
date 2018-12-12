@@ -1,0 +1,20 @@
+.tabs {
+    .el-table th div.el-input {
+        padding-left: 0;
+        padding-right: 0;
+    }
+    .el-table th div.cell {
+        height: 40px;
+        line-height: 40px;
+    }
+    .el-table th div.cell,
+    .el-table td div.cell {
+        height: 40px;
+        line-height: 40px;
+    }
+    .el-table th div.el-input {
+        padding-left: 0;
+        padding-right: 0;
+        // line-height: 28px;
+    }
+}

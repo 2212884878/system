@@ -5,6 +5,7 @@
 				<h4>{{$route.meta.title}}</h4>
 			</el-col>
 			<el-col :span="4" class="text-alginr">
+				<el-button type="primary" size="mini" @click="go">返回</el-button>
 				<el-button type="primary" icon="el-icon-edit" size="mini">我要留言</el-button>
 			</el-col>
 		</el-row>
@@ -15,7 +16,7 @@
 			<el-row :gutter="20">
 				<el-col :span="12">
 					<el-form-item label="景区ID">
-						<el-input v-model="ruleForm.parkID" disabled></el-input>
+						<el-input v-model="ruleForm.parkId" disabled></el-input>
 					</el-form-item>
 				</el-col>
 				<el-col :span="12">
@@ -83,22 +84,22 @@
 				</el-col>
 			</el-row>
 			<!-- 图片 -->
-			<el-form-item label="图片资料ID" prop="pictureId">
+			<!-- <el-form-item label="图片资料ID" prop="pictureId">
 				<el-input v-model="ruleForm.pictureId" disabled></el-input>
-				<!-- <el-upload class="avatar-uploader" :action="importFileUrl" :show-file-list="false" :on-success="handleAvatarSuccess3"
+				<el-upload class="avatar-uploader" :action="importFileUrl" :show-file-list="false" :on-success="handleAvatarSuccess3"
 				 :before-upload="beforeAvatarUpload" v-if="status == 'edit'">
 					<i class="el-icon-circle-plus">上传图片</i>
-				</el-upload> -->
-			</el-form-item>
+				</el-upload>
+			</el-form-item> -->
 
 			<!-- 子图片Id -->
-			<el-form-item label="子图片ID">
+			<!-- <el-form-item label="子图片ID">
 				<el-input v-model="imgs" disabled></el-input>
-				<!-- <el-upload class="avatar-uploader" :action="importFileUrl" :show-file-list="false" :on-success="handleAvatarSuccess2"
+				<el-upload class="avatar-uploader" :action="importFileUrl" :show-file-list="false" :on-success="handleAvatarSuccess2"
 				 :before-upload="beforeAvatarUpload" :limit="3" :on-exceed="PictureIdz" multiple v-if="status == 'edit'">
 					<i class="el-icon-circle-plus">上传图片</i>
-				</el-upload> -->
-			</el-form-item>
+				</el-upload>
+			</el-form-item> -->
 
 			<!-- 价格 -->
 			<el-row :gutter="20">
@@ -227,11 +228,11 @@
 				<el-col :span="12">
 					<el-form-item label="是否允许自提或邮寄">
 						<el-checkbox-group v-model="ruleForm.saleType" v-if="status == 'edit'">
-							<el-checkbox label="是" name="saleType" true-label="1" false-label="0"></el-checkbox>
+							<el-checkbox label="是" name="saleType" :true-label="1" :false-label="0"></el-checkbox>
 						</el-checkbox-group>
 
 						<el-checkbox-group v-model="ruleForm.saleType" v-else>
-							<el-checkbox label="是" name="saleType" true-label="1" false-label="0" disabled></el-checkbox>
+							<el-checkbox label="是" name="saleType" :true-label="1" :false-label="0" disabled></el-checkbox>
 						</el-checkbox-group>
 					</el-form-item>
 				</el-col>
@@ -242,10 +243,10 @@
 				<el-col :span="12">
 					<el-form-item label="是否允许退票" prop="returnSign">
 						<el-checkbox-group v-model="ruleForm.returnSign" v-if="status == 'edit'">
-							<el-checkbox label="是" name="returnSign" true-label="1" false-label="0"></el-checkbox>
+							<el-checkbox label="是" name="returnSign" :true-label="1" :false-label="0"></el-checkbox>
 						</el-checkbox-group>
 						<el-checkbox-group v-model="ruleForm.returnSign" v-else>
-							<el-checkbox label="是" name="returnSign" true-label="1" false-label="0" disabled></el-checkbox>
+							<el-checkbox label="是" name="returnSign" :true-label="1" :false-label="0" disabled></el-checkbox>
 						</el-checkbox-group>
 					</el-form-item>
 
@@ -253,10 +254,10 @@
 				<el-col :span="12">
 					<el-form-item label="是否允许重复进出" prop="repeatUseSign">
 						<el-checkbox-group v-model="ruleForm.repeatUseSign" v-if="status == 'edit'">
-							<el-checkbox label="是" name="repeatUseSign" true-label="1" false-label="0"></el-checkbox>
+							<el-checkbox label="是" name="repeatUseSign" :true-label="1" :false-label="0"></el-checkbox>
 						</el-checkbox-group>
 						<el-checkbox-group v-model="ruleForm.repeatUseSign" v-else>
-							<el-checkbox label="是" name="repeatUseSign" true-label="1" false-label="0" disabled></el-checkbox>
+							<el-checkbox label="是" name="repeatUseSign" :true-label="1" :false-label="0" disabled></el-checkbox>
 						</el-checkbox-group>
 					</el-form-item>
 				</el-col>
@@ -268,28 +269,28 @@
 					<el-tabs v-model="activeName" type="border-card">
 						<el-tab-pane label="使用说明" name="first">
 							<el-form-item label="使用说明" class="lhn">
-								<quill-editor ref="UseContent" v-model="ruleForm.UseContent" :options="editorOption" @change="alertValue($event,ruleForm.UseContent,2000)"
+								<quill-editor ref="UseContent" v-model="ruleForm.useContent" :options="editorOption" @change="alertValue($event,ruleForm.useContent,2000)"
 								 @ready="onEditorReady($event)">
 								</quill-editor>
 							</el-form-item>
 						</el-tab-pane>
 						<el-tab-pane label="退款说明" name="second">
 							<el-form-item label="退款说明" class="lhn">
-								<quill-editor ref="returnContent" v-model="ruleForm.returnContent" :options="editorOption" @change="alertValue($event,ruleForm.UseContent,2000)"
+								<quill-editor ref="returnContent" v-model="ruleForm.returnContent" :options="editorOption" @change="alertValue($event,ruleForm.returnContent,2000)"
 								 @ready="onEditorReady($event)">
 								</quill-editor>
 							</el-form-item>
 						</el-tab-pane>
-						<el-tab-pane label="改签说明" name="third">
+						<!-- <el-tab-pane label="改签说明" name="third">
 							<el-form-item label="改签说明" class="lhn">
-								<quill-editor ref="editContent" v-model="ruleForm.editContent" :options="editorOption" @change="alertValue($event,ruleForm.UseContent,2000)"
+								<quill-editor ref="editContent" v-model="ruleForm.editContent" :options="editorOption" @change="alertValue($event,ruleForm.editContent,2000)"
 								 @ready="onEditorReady($event)">
 								</quill-editor>
 							</el-form-item>
-						</el-tab-pane>
+						</el-tab-pane> -->
 						<el-tab-pane label="备注" name="fourth">
 							<el-form-item label="备注" class="lhn">
-								<quill-editor ref="remark" v-model="ruleForm.remark" :options="editorOption" @change="alertValue($event,ruleForm.UseContent,2000)"
+								<quill-editor ref="remark" v-model="ruleForm.remark" :options="editorOption" @change="alertValue($event,ruleForm.remark,2000)"
 								 @ready="onEditorReady($event)">
 								</quill-editor>
 							</el-form-item>
@@ -306,7 +307,7 @@
 					<el-tabs v-model="activeName2" type="border-card">
 						<el-tab-pane label="Directions for use" name="first">
 							<el-form-item label="Directions for use" class="lhn">
-								<quill-editor ref="useContentEnglish" v-model="ruleForm.useContentEnglish" :options="editorOption" @change="alertValue($event,ruleForm.UseContent,2000)"
+								<quill-editor ref="useContentEnglish" v-model="ruleForm.useContentEnglish" :options="editorOption" @change="alertValue($event,ruleForm.useContentEnglish,2000)"
 								 @ready="onEditorReady($event)">
 								</quill-editor>
 							</el-form-item>
@@ -314,20 +315,20 @@
 						<el-tab-pane label="Refund instructions" name="second">
 							<el-form-item label="Refund instructions" class="lhn">
 								<quill-editor ref="returnContentEnglish" v-model="ruleForm.returnContentEnglish" :options="editorOption"
-								 @change="alertValue($event,ruleForm.UseContent,2000)" @ready="onEditorReady($event)">
+								 @change="alertValue($event,ruleForm.returnContentEnglish,2000)" @ready="onEditorReady($event)">
 								</quill-editor>
 							</el-form-item>
 						</el-tab-pane>
-						<el-tab-pane label="Endorsed to illustrate" name="third">
+						<!-- <el-tab-pane label="Endorsed to illustrate" name="third">
 							<el-form-item label="Endorsed to illustrate" class="lhn">
-								<quill-editor ref="editContentEnglish" v-model="ruleForm.editContentEnglish" :options="editorOption" @change="alertValue($event,ruleForm.UseContent,2000)"
+								<quill-editor ref="editContentEnglish" v-model="ruleForm.editContentEnglish" :options="editorOption" @change="alertValue($event,ruleForm.editContentEnglish,2000)"
 								 @ready="onEditorReady($event)">
 								</quill-editor>
 							</el-form-item>
-						</el-tab-pane>
+						</el-tab-pane> -->
 						<el-tab-pane label="note" name="fourth">
 							<el-form-item label="note" class="lhn">
-								<quill-editor ref="remarkEnglisn" v-model="ruleForm.remarkEnglisn" :options="editorOption" @change="alertValue($event,ruleForm.UseContent,2000)"
+								<quill-editor ref="remarkEnglisn" v-model="ruleForm.remarkEnglisn" :options="editorOption" @change="alertValue($event,ruleForm.remarkEnglisn,2000)"
 								 @ready="onEditorReady($event)">
 								</quill-editor>
 							</el-form-item>
@@ -338,12 +339,11 @@
 
 			<el-form-item>
 				<template v-if="status == 'edit'">
-					{{status}}
 					<el-button type="primary" @click="submitFormEdit('ruleForm')">保存修改</el-button>
-					<el-button @click="resetForm('ruleForm')">重置</el-button>
+					<!-- <el-button @click="resetForm('ruleForm')">重置</el-button> -->
 				</template>
 				<template v-else>
-					<el-button type="primary" @click="submitFormDel('ruleForm')">产品下架</el-button>
+					<el-button type="primary" @click="submitFormDel(id)">产品下架</el-button>
 				</template>
 
 			</el-form-item>
@@ -417,7 +417,7 @@
 				['clean']
 			];
 			return {
-				id: this.$route.params.id, //产品ID
+				id: this.$route.query.id, //产品ID
 				status: this.$route.query.status, //修改标识
 				loading: false,
 				activeName: 'first', //下面说明tab切换标识
@@ -434,6 +434,7 @@
 				imgs: '',
 				list: [],
 				ruleForm: { //表单
+					id:this.$route.query.id,
 					parkId: '',
 					parkName: '',
 					productCode: '',
@@ -445,26 +446,26 @@
 					settlementPrice: '',
 					salePrice: '',
 					typeId: '',
-					pictureId: '',
+					// pictureId: '',
 					scheduledDays: 30,
 					effectiveDays: 1,
-					returnSign: false,
+					returnSign: 0,
 					returnDays: 3,
 					useBeginTime: '09:00:00',
 					useEndTime: '18:00:00',
-					repeatUseSign: false,
+					repeatUseSign: 0,
 					unitName: '1',
-					UseContent: "",
+					useContent: "",
 					returnContent: "",
-					editContent: "",
+					// editContent: "",
 					remark: "",
 					useContentEnglish: "",
 					returnContentEnglish: "",
-					editContentEnglish: "",
+					// editContentEnglish: "",
 					remarkEnglisn: "",
-					saleType: false,
+					saleType: 0,
 					commitCount: 2000,
-					subPictureIdList: '' //子图片ID
+					// subPictureIdList: '' //子图片ID
 				},
 				rules: {
 					productName: [{
@@ -540,11 +541,11 @@
 						message: '请选择产品分类',
 						trigger: 'change'
 					}],
-					pictureId: [{
-						required: true,
-						message: '请输入图片资料ID',
-						trigger: 'change'
-					}],
+// 					pictureId: [{
+// 						required: true,
+// 						message: '请输入图片资料ID',
+// 						trigger: 'change'
+// 					}],
 					scheduledDays: [{
 						required: true,
 						message: '不能为空'
@@ -585,6 +586,13 @@
 			quillEditor
 		},
 		methods: {
+			go() {//返回
+				if(this.status === 'edit') {
+					this.$router.push({path:'/editProduct'})
+				}else if(this.status === 'del') {
+					this.$router.push({path:'/delProduct'})
+				}
+			},
 			onEditorReady(editor) { //富文本禁用
 				this.status == 'del' ? editor.enable(false) : '';
 			},
@@ -598,8 +606,7 @@
 					this.json2 = res.data.data;
 				})
 			},
-			// 时间
-			logTimeChange1(val) {
+			logTimeChange1(val) {// 时间
 				console.log(val)
 				this.ruleForm.useBeginTime = val;
 			},
@@ -607,8 +614,7 @@
 				console.log(val)
 				this.ruleForm.useEndTime = val;
 			},
-			// vue-quill-editor设置长度限制的提示
-			alertValue(e, strValue, decimalNum) {
+			alertValue(e, strValue, decimalNum) {// vue-quill-editor设置长度限制的提示
 				var realLength = 0,
 					len = strValue.length,
 					charCode = -1,
@@ -631,22 +637,21 @@
 				this.$refs[formName].validate((valid) => {
 					if (valid) {
 						console.log(this.ruleForm);
-						this.$axios.put("http://192.168.2.38:5010/product/update", this.ruleForm, {
-							headers: {
-								'Content-type': 'application/json'
-							}
-						}).then(res => {
+						this.$axios.put("http://192.168.2.38:5010/product/update", this.ruleForm).then(res => {
 							if (res.data.code == 200) {
 								this.$message({
 									message: res.data.message,
 									type: 'success'
 								});
+								this.$router.push("/editProduct");
 							} else {
 								this.$message({
 									message: res.data.message,
 									type: 'warning'
 								});
 							}
+						}).catch(error => {
+							console.log(error)
 						})
 					} else {
 						console.log('error submit!!');
@@ -654,30 +659,26 @@
 					}
 				});
 			},
-			submitFormDel(formName) { //删除产品（下架）
-
-			},
-			resetForm(formName) { //重置表单
-				this.ruleForm.parkID = "";
-				this.ruleForm.productCode = "";
-				this.ruleForm.parentId = "";
-				this.ruleForm.pictureId = "";
-				this.ruleForm.UseContent = "";
-				this.ruleForm.returnContent = "";
-				this.ruleForm.editContent = "";
-				this.ruleForm.remark = "";
-				this.ruleForm.useContentEnglish = "";
-				this.ruleForm.returnContentEnglish = "";
-				this.ruleForm.editContentEnglish = "";
-				this.ruleForm.remarkEnglisn = "";
-				this.imgs = "";
-				this.ruleForm.subPictureId = "";
-				this.$refs[formName].resetFields();
+			submitFormDel(id) { //删除产品（下架）
+				console.log(id)
+				this.$axios.delete("http://192.168.2.38:5010/product/delete/" + id).then(res => {
+					if (res.data.code == 200) {
+						this.$message({
+							message: res.data.message,
+							type: 'success'
+						});
+						this.$router.push({path:'/delProduct'})
+					} else {
+						this.$message.error(res.data.message);
+					}
+				}).catch(error => {
+					console.log(error)
+				})
 			},
 			GetFinnd() { //根据产品ID查询
 				this.$axios.get("http://192.168.2.38:5010/product/finnd/" + this.id).then(res => {
 					if (res.data.code == 200) {
-						this.list = res.data.data.list;
+						this.list = res.data.data;
 						this.setFrom();
 					} else {
 						this.$message.error(res.data.message);
@@ -688,9 +689,37 @@
 			},
 			setFrom() { //赋值查询出来的数据
 				var list = this.list;
-				list.forEach((v, k) => {
-					this.ruleForm[k] = v;
-				})
+				this.ruleForm.parkId=list.parkId
+				this.ruleForm.parkName=list.parkName
+				this.ruleForm.productCode=list.productCode
+				this.ruleForm.productName=list.productName
+				this.ruleForm.productNameEnglish=list.productNameEnglish
+				this.ruleForm.classId=list.classId
+				this.ruleForm.originalPrice=list.originalPrice
+				this.ruleForm.returnPrice=list.returnPrice
+				this.ruleForm.settlementPrice=list.settlementPrice
+				this.ruleForm.salePrice=list.salePrice
+				this.ruleForm.typeId=list.typeId
+				// this.ruleForm.pictureId=list.pictureId
+				this.ruleForm.scheduledDays=list.scheduledDays
+				this.ruleForm.effectiveDays=list.effectiveDays
+				this.ruleForm.returnSign=list.returnSign
+				this.ruleForm.returnDays=list.returnDays
+				this.ruleForm.useBeginTime=list.useBeginTime
+				this.ruleForm.useEndTime=list.useEndTime
+				this.ruleForm.repeatUseSign=list.repeatUseSign
+				this.ruleForm.unitName=list.unitName
+				this.ruleForm.useContent=list.useContent
+				this.ruleForm.returnContent=list.returnContent
+				// this.ruleForm.editContent=list.editContent
+				this.ruleForm.remark=list.remark
+				this.ruleForm.useContentEnglish=list.useContentEnglish
+				this.ruleForm.returnContentEnglish=list.returnContentEnglish
+				// this.ruleForm.editContentEnglish=list.editContentEnglish
+				this.ruleForm.remarkEnglisn=list.remarkEnglisn
+				this.ruleForm.saleType=list.saleType
+				this.ruleForm.commitCount=list.commitCount
+				// this.ruleForm.subPictureIdList=list.subPictureIdList
 			}
 		},
 		mounted() {
@@ -708,39 +737,7 @@
 	}
 </script>
 
-<style scoped="scoped" lang="scss">
-	.newPr {
-		margin: 40px auto;
-		width: 1200px;
-		min-height: 700px;
-		padding: 40px 20px;
-		background: #fff;
-		box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.12), 0 0 3px 0 rgba(0, 0, 0, 0.04);
-
-		.borderm2 {
-			border-bottom: 2px solid #000;
-			padding-bottom: 10px;
-			margin-bottom: 20px;
-		}
-
-		.new-button {
-			margin-top: 20px;
-			margin-bottom: 20px;
-		}
-
-		.demo-ruleForm {
-			padding: 20px;
-			width: 100%;
-			border: 1px solid #b3d8ff;
-			border-radius: 5px;
-		}
-
-		.text-alginr {
-			text-align: right;
-		}
-
-	}
-</style>
+<style lang="scss" src="../../assets/scss/product.scss" scoped="scoped"></style>
 <style lang="scss">
 	.lhn .el-form-item__content {
 		line-height: normal;

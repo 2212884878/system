@@ -1,4 +1,9 @@
 <template>
+	<!--
+    	作者：lixiaoyi
+    	时间：2018-12-12
+    	描述：新产品上架
+    -->
 	<section class="newPr">
 		<el-row class="borderm2">
 			<el-col :span="20">
@@ -51,7 +56,7 @@
 				<el-col :span="12">
 					<el-form-item label="产品类型" prop="classId" style="width: 100%;">
 						<el-select v-model="ruleForm.classId" placeholder="请选择产品类型">
-							<template v-for="item in json">
+							<template v-for="item in classID">
 								<el-option :label="item.name" :value="item.id"></el-option>
 							</template>
 						</el-select>
@@ -60,7 +65,7 @@
 				<el-col :span="12">
 					<el-form-item label="产品分类" prop="typeId">
 						<el-select v-model="ruleForm.typeId" placeholder="请选择产品分类">
-							<template v-for="item in json2">
+							<template v-for="item in typeID">
 								<el-option :label="item.name" :value="item.id"></el-option>
 							</template>
 						</el-select>
@@ -172,7 +177,7 @@
 				<el-col :span="12">
 					<el-form-item label="是否允许自提或邮寄">
 						<el-checkbox-group v-model="ruleForm.saleType">
-							<el-checkbox label="是" name="saleType"></el-checkbox>
+							<el-checkbox label="是" name="saleType" :true-label="1" :false-label="0"></el-checkbox>
 						</el-checkbox-group>
 					</el-form-item>
 				</el-col>
@@ -183,7 +188,7 @@
 				<el-col :span="12">
 					<el-form-item label="是否允许退票" prop="returnSign">
 						<el-checkbox-group v-model="ruleForm.returnSign">
-							<el-checkbox label="是" name="returnSign"></el-checkbox>
+							<el-checkbox label="是" name="returnSign" :true-label="1" :false-label="0"></el-checkbox>
 						</el-checkbox-group>
 					</el-form-item>
 
@@ -191,7 +196,7 @@
 				<el-col :span="12">
 					<el-form-item label="是否允许重复进出" prop="repeatUseSign">
 						<el-checkbox-group v-model="ruleForm.repeatUseSign">
-							<el-checkbox label="是" name="repeatUseSign"></el-checkbox>
+							<el-checkbox label="是" name="repeatUseSign" :true-label="1" :false-label="0"></el-checkbox>
 						</el-checkbox-group>
 					</el-form-item>
 				</el-col>
@@ -203,25 +208,25 @@
 					<el-tabs v-model="activeName" type="border-card">
 						<el-tab-pane label="使用说明" name="first">
 							<el-form-item label="使用说明" class="lhn">
-								<quill-editor ref="UseContent" v-model="ruleForm.UseContent" :options="editorOption" @change="alertValue($event,ruleForm.UseContent,2000)">
+								<quill-editor ref="UseContent" v-model="ruleForm.useContent" :options="editorOption" @change="alertValue($event,ruleForm.useContent,2000)">
 								</quill-editor>
 							</el-form-item>
 						</el-tab-pane>
 						<el-tab-pane label="退款说明" name="second">
 							<el-form-item label="退款说明" class="lhn">
-								<quill-editor ref="returnContent" v-model="ruleForm.returnContent" :options="editorOption" @change="alertValue($event,ruleForm.UseContent,2000)">
+								<quill-editor ref="returnContent" v-model="ruleForm.returnContent" :options="editorOption" @change="alertValue($event,ruleForm.returnContent,2000)">
 								</quill-editor>
 							</el-form-item>
 						</el-tab-pane>
-						<el-tab-pane label="改签说明" name="third">
+						<!-- <el-tab-pane label="改签说明" name="third">
 							<el-form-item label="改签说明" class="lhn">
-								<quill-editor ref="editContent" v-model="ruleForm.editContent" :options="editorOption" @change="alertValue($event,ruleForm.UseContent,2000)">
+								<quill-editor ref="editContent" v-model="ruleForm.editContent" :options="editorOption" @change="alertValue($event,ruleForm.editContent,2000)">
 								</quill-editor>
 							</el-form-item>
-						</el-tab-pane>
+						</el-tab-pane> -->
 						<el-tab-pane label="备注" name="fourth">
 							<el-form-item label="备注" class="lhn">
-								<quill-editor ref="remark" v-model="ruleForm.remark" :options="editorOption" @change="alertValue($event,ruleForm.UseContent,2000)">
+								<quill-editor ref="remark" v-model="ruleForm.remark" :options="editorOption" @change="alertValue($event,ruleForm.remark,2000)">
 								</quill-editor>
 							</el-form-item>
 						</el-tab-pane>
@@ -237,26 +242,26 @@
 					<el-tabs v-model="activeName2" type="border-card">
 						<el-tab-pane label="Directions for use" name="first">
 							<el-form-item label="Directions for use" class="lhn">
-								<quill-editor ref="useContentEnglish" v-model="ruleForm.useContentEnglish" :options="editorOption" @change="alertValue($event,ruleForm.UseContent,2000)">
+								<quill-editor ref="useContentEnglish" v-model="ruleForm.useContentEnglish" :options="editorOption" @change="alertValue($event,ruleForm.useContentEnglish,2000)">
 								</quill-editor>
 							</el-form-item>
 						</el-tab-pane>
 						<el-tab-pane label="Refund instructions" name="second">
 							<el-form-item label="Refund instructions" class="lhn">
 								<quill-editor ref="returnContentEnglish" v-model="ruleForm.returnContentEnglish" :options="editorOption"
-								 @change="alertValue($event,ruleForm.UseContent,2000)">
+								 @change="alertValue($event,ruleForm.returnContentEnglish,2000)">
 								</quill-editor>
 							</el-form-item>
 						</el-tab-pane>
-						<el-tab-pane label="Endorsed to illustrate" name="third">
+						<!-- <el-tab-pane label="Endorsed to illustrate" name="third">
 							<el-form-item label="Endorsed to illustrate" class="lhn">
-								<quill-editor ref="editContentEnglish" v-model="ruleForm.editContentEnglish" :options="editorOption" @change="alertValue($event,ruleForm.UseContent,2000)">
+								<quill-editor ref="editContentEnglish" v-model="ruleForm.editContentEnglish" :options="editorOption" @change="alertValue($event,ruleForm.editContentEnglish,2000)">
 								</quill-editor>
 							</el-form-item>
-						</el-tab-pane>
+						</el-tab-pane> -->
 						<el-tab-pane label="note" name="fourth">
 							<el-form-item label="note" class="lhn">
-								<quill-editor ref="remarkEnglisn" v-model="ruleForm.remarkEnglisn" :options="editorOption" @change="alertValue($event,ruleForm.UseContent,2000)">
+								<quill-editor ref="remarkEnglisn" v-model="ruleForm.remarkEnglisn" :options="editorOption" @change="alertValue($event,ruleForm.remarkEnglisn,2000)">
 								</quill-editor>
 							</el-form-item>
 						</el-tab-pane>
@@ -272,44 +277,12 @@
 
 
 		<el-dialog title="银科产品信息" :visible.sync="dialogVisible" width="80%" center>
-			<!-- <table id="table" data-striped="true" data-pagination="true" class="table" data-filter-control="true" data-locale="zh-CN"
-			 v-loading="loading" element-loading-text="拼命加载数据中" element-loading-spinner="el-icon-loading">
-				<thead>
-					<tr>
-						<th data-align="center"></th>
-						<th data-field="productId" data-align="center" data-valign="middle">景区ID</th>
-						<th data-field="productName" data-filter-control="input" data-align="center" data-valign="middle">景区名称</th>
-						<th data-field="productType" data-align="center" data-valign="middle">门票类型</th>
-						<th data-field="parkID" data-align="center" data-valign="middle">门票ID</th>
-						<th data-field="parkName" data-filter-control="input" data-align="center" data-valign="middle">门票名称</th>
-						<th data-field="productPrice" data-align="center" data-valign="middle">门票单价</th>
-						<th data-field="isTheatre" data-align="center" data-valign="middle">剧场票</th>
-						<th data-field="productCode" data-align="center" data-valign="middle">门票编码</th>
-					</tr>
-					<tr>
-						<td></td>
-						<td>
-							<el-input v-model="productName" @change="search(currentPage,PageSizes,productName,parkName)"></el-input>
-						</td>
-						<td></td>
-						<td></td>
-						<td>
-							<el-input v-model="parkName" @change="search(currentPage,PageSizes,productName,parkName)"></el-input>
-						</td>
-						<td></td>
-						<td></td>
-						<td></td>
-					</tr>
-				</thead>
-			</table> -->
-
 			<div v-loading="loading" class="tab">
 				<el-table :data="list" border highlight-current-row style="width: 100%" stripe size="medium" @row-click="openDetails"
 				 :row-class-name="tableRowClassName">
 					<el-table-column label="选择" align="center">
 						<el-table-column prop="status" align="center" width="60">
 							<template slot-scope="scope">
-								<!-- <el-radio v-model=""></el-radio> -->
 								<input type="radio" name="radio" ref="radio">
 							</template>
 						</el-table-column>
@@ -318,10 +291,14 @@
 						<el-table-column prop="parkID" width="100" align="center"></el-table-column>
 					</el-table-column>
 					<el-table-column prop="parkName" label="景区名称" align="center">
-						<el-table-column prop="parkName" align="center">
+						<el-table-column align="center">
 							<template slot="header" slot-scope="scope">
-								<el-input v-model="parkName" size="small" placeholder="输入关键字搜索" @keyup.enter.native="search(currentPage,PageSize,parkName,productName)" />
+								<el-input v-model.lazy="parkName" size="small" placeholder="输入关键字搜索" @keyup.enter.native="search(currentPage,PageSize,parkName,productName)"
+								 @change="search(currentPage,PageSize,parkName,productName)" />
 							</template>
+							<template slot-scope="scope">    
+								                   <span class="col-cont" v-html="showDate(scope.row.parkName)"></span>
+								              </template>
 						</el-table-column>
 					</el-table-column>
 					<el-table-column prop="productType" width="100" label="门票类型" align="center">
@@ -331,10 +308,14 @@
 						<el-table-column prop="productId" width="150" align="center"></el-table-column>
 					</el-table-column>
 					<el-table-column prop="productName" label="门票名称" align="center">
-						<el-table-column prop="productName" align="center">
+						<el-table-column align="center">
 							<template slot="header" slot-scope="scope">
-								<el-input v-model="productName" size="small" placeholder="输入关键字搜索" @keyup.enter.native="search(currentPage,PageSize,parkName,productName)" />
+								<el-input v-model.lazy="productName" size="small" placeholder="输入关键字搜索" @keyup.enter.native="search(currentPage,PageSize,parkName,productName)"
+								 @change="search(currentPage,PageSize,parkName,productName)" />
 							</template>
+							<template slot-scope="scope">    
+								                   <span class="col-cont" v-html="showDate(scope.row.productName)"></span>
+								              </template>
 						</el-table-column>
 					</el-table-column>
 					<el-table-column prop="isTheatre" width="100" label="剧场票" align="center">
@@ -364,13 +345,15 @@
 </template>
 
 <script>
-	import '@/assets/filter-control/bootstrap-table-filter-control.js'
 	import {
 		quillEditor
 	} from 'vue-quill-editor'
 	import 'quill/dist/quill.core.css'
 	import 'quill/dist/quill.snow.css'
 	import 'quill/dist/quill.bubble.css'
+	import {
+		mapState
+	} from "vuex";
 	export default {
 		data() {
 			var validatePass = (rule, value, callback) => {
@@ -438,8 +421,6 @@
 				activeName: 'first', //下面说明tab切换标识
 				activeName2: 'first',
 				loading: true,
-				json: '', //下拉select json
-				json2: '',
 				list: [], //列表数据
 				rows: [], //列表点击选择的数据
 				importFileUrl: 'http://192.168.2.34:2600/staticResource/uploadFile', //上传图片地址
@@ -466,21 +447,21 @@
 					pictureId: '',
 					scheduledDays: 30,
 					effectiveDays: 1,
-					returnSign: false,
+					returnSign: 1,
 					returnDays: 3,
 					useBeginTime: '09:00:00',
 					useEndTime: '18:00:00',
-					repeatUseSign: false,
+					repeatUseSign: 1,
 					unitName: '1',
-					UseContent: "",
+					useContent: "",
 					returnContent: "",
-					editContent: "",
+					// editContent: "",
 					remark: "",
 					useContentEnglish: "",
 					returnContentEnglish: "",
-					editContentEnglish: "",
+					// editContentEnglish: "",
 					remarkEnglisn: "",
-					saleType: false,
+					saleType: 1,
 					commitCount: 2000,
 					subPictureIdList: '' //子图片ID
 				},
@@ -599,14 +580,31 @@
 				}
 			}
 		},
+		computed:{
+			//从vuex获取用户数据
+			...mapState(["uid", "token","typeID","classID"]),
+		},
 		components: {
 			quillEditor
 		},
 		mounted() {
-			this.getGoodsList();
-			this.getGoodsList2();
+			
 		},
 		methods: {
+			// 筛选变色
+			showDate(val) {
+				val = val + '';
+				if ((val.indexOf(this.parkName) !== -1 && this.parkName !== '') || (val.indexOf(this.productName) !== -1 && this.productName !==
+						'')) {
+					if (this.parkName !== '') {
+						return val.replace(this.parkName, '<font color="#409EFF">' + this.parkName + '</font>')
+					} else if (this.productName !== '') {
+						return val.replace(this.productName, '<font color="#409EFF">' + this.productName + '</font>')
+					}
+				} else {
+					return val
+				}
+			},
 			search(i, z, Prn, Pkn) { //列过滤
 				this.Get();
 			},
@@ -619,16 +617,6 @@
 				this.currentPage = val;
 				this.Get();
 				console.log(`当前页: ${val}`);
-			},
-			getGoodsList() { //获取产品类型
-				this.$axios.get('../../../static/classId.json').then(res => {
-					this.json = res.data.data;
-				})
-			},
-			getGoodsList2() { //获取产品类型
-				this.$axios.get('../../../static/typeId.json').then(res => {
-					this.json2 = res.data.data;
-				})
 			},
 			logTimeChange1(val) { // 获取开始时间
 				console.log(val)
@@ -676,6 +664,7 @@
 			SetRuleForm() { //载入弹框确认
 				var that = this.rows;
 				this.ruleForm.parkId = that.parkID; //景区ID
+				this.ruleForm.parkName = that.parkName;
 				this.ruleForm.productCode = that.productCode; //门票编码
 				this.ruleForm.productName = that.productName; //产品名称
 
@@ -728,13 +717,13 @@
 				this.ruleForm.productCode = "";
 				this.ruleForm.parentId = "";
 				this.ruleForm.pictureId = "";
-				this.ruleForm.UseContent = "";
+				this.ruleForm.useContent = "";
 				this.ruleForm.returnContent = "";
-				this.ruleForm.editContent = "";
+				// this.ruleForm.editContent = "";
 				this.ruleForm.remark = "";
 				this.ruleForm.useContentEnglish = "";
 				this.ruleForm.returnContentEnglish = "";
-				this.ruleForm.editContentEnglish = "";
+				// this.ruleForm.editContentEnglish = "";
 				this.ruleForm.remarkEnglisn = "";
 				this.parkName = '';
 				this.productName = '';
@@ -782,9 +771,7 @@
 					productName: this.productName || '',
 					parkName: this.parkName || ''
 				}
-				this.$axios.get("http://192.168.2.28:6079/cashinterface-mucon/product/get", {
-					params: data
-				}).then(res => {
+				this.$axios.post("http://192.168.2.28:5009/cashinterface/unbind", this.StringDat(data)).then(res => {
 					if (res.data.code == 200) {
 						this.list = res.data.data.list;
 						this.count = res.data.data.total;
@@ -804,6 +791,7 @@
 				row.index = rowIndex;
 			},
 			openDetails(row, event, column) { //单击表格一行获取数据
+				console.log(row.index)
 				document.getElementsByName("radio")[row.index].setAttribute("checked", true)
 				this.rows = row;
 			}
@@ -828,42 +816,7 @@
 	}
 </script>
 
-<style scoped lang="scss">
-	.newPr {
-		margin: 40px auto;
-		width: 1200px;
-		padding: 40px 20px;
-		background: #fff;
-		box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.12), 0 0 3px 0 rgba(0, 0, 0, 0.04);
-
-		.borderm2 {
-			border-bottom: 2px solid #000;
-			padding-bottom: 10px;
-		}
-
-		.new-button {
-			margin-top: 20px;
-			margin-bottom: 20px;
-		}
-
-		.demo-ruleForm {
-			padding: 20px;
-			width: 100%;
-			border: 1px solid #b3d8ff;
-			border-radius: 5px;
-		}
-
-		.text-alginr {
-			text-align: right;
-		}
-
-		.pages {
-			height: 32px;
-			text-align: center;
-			margin-top: 20px;
-		}
-	}
-</style>
+<style lang="scss" src="../../assets/scss/product.scss" scoped="scoped"></style>
 <style lang="scss">
 	.lhn .el-form-item__content {
 		line-height: normal;

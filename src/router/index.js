@@ -8,19 +8,25 @@ const Login = r => require.ensure([], () => r(require('@/view/login')), 'Login')
 //首頁
 const Home = r => require.ensure([], () => r(require('@/view/home/home')), 'Home')
 
-//子系统1
-const Sub1Index = r => require.ensure([], () => r(require('@/view/Subsystems1/Sub1Index')), 'Sub1Index')
-const Main = r => require.ensure([], () => r(require('@/view/Subsystems1/Main')), 'Main')
-const Product = r => require.ensure([], () => r(require('@/view/Subsystems1/Product')), 'Product')
-const newProduct = r => require.ensure([], () => r(require('@/view/Subsystems1/newProduct')), 'newProduct')
-const editProduct = r => require.ensure([], () => r(require('@/view/Subsystems1/editProduct')), 'editProduct')
-const delProduct = r => require.ensure([], () => r(require('@/view/Subsystems1/delProduct')), 'delProduct')
+//票务管理子系统子系统
+const SubIndex = r => require.ensure([], () => r(require('@/view/Subsystems/SubIndex')), 'SubIndex')
+//票务管理子系统首页
+const Main = r => require.ensure([], () => r(require('@/view/Subsystems/Main')), 'Main')
 
-const Table = r => require.ensure([], () => r(require('@/view/Subsystems1/Table')), 'Table')
-const Form = r => require.ensure([], () => r(require('@/view/Subsystems1/Form')), 'Form')
+//产品相关
+const Product = r => require.ensure([], () => r(require('@/view/Subsystems/Product')), 'Product')
+const newProduct = r => require.ensure([], () => r(require('@/view/Subsystems/newProduct')), 'newProduct')
+const editProduct = r => require.ensure([], () => r(require('@/view/Subsystems/editProduct')), 'editProduct')
+const delProduct = r => require.ensure([], () => r(require('@/view/Subsystems/delProduct')), 'delProduct')
 
-//子系统2
-const Sub2Index = r => require.ensure([], () => r(require('@/view/Subsystems2/Sub2Index')), 'Sub2Index')
+//库存相关
+const billbase = r => require.ensure([], () => r(require('@/view/Subsystems/billbase')), 'billbase')
+const updateBillBase = r => require.ensure([], () => r(require('@/view/Subsystems/updateBillBase')), 'updateBillBase')
+const closeSale = r => require.ensure([], () => r(require('@/view/Subsystems/closeSale')), 'closeSale')
+const holiday = r => require.ensure([], () => r(require('@/view/Subsystems/holiday')), 'holiday')
+const orderList = r => require.ensure([], () => r(require('@/view/Subsystems/orderList')), 'orderList')
+
+
 
 Vue.use(Router)
 
@@ -28,7 +34,7 @@ const routes = [{
 		path: '/',
 		component: Login
 	},
-	{
+	{ //子系统选择页面
 		path: '/home',
 		component: Home,
 		meta: {
@@ -39,16 +45,16 @@ const routes = [{
 		path: '/login',
 		component: Login
 	},
-	{
-		path: '/Sub1Index',
-		component: Sub1Index,
+	{ //票务管理子系统
+		path: '/SubIndex',
+		component: SubIndex,
 		meta: {
 			requireAuth: true
 		},
 		children: [{
 				path: '',
-				name: 'main-default',
 				component: Main,
+				name: 'main-defa',
 				meta: {
 					title: '主页'
 				}
@@ -62,7 +68,7 @@ const routes = [{
 				}
 			},
 			{
-				path: '/Product/:id',
+				path: '/Product',
 				component: Product,
 				name: 'Product',
 				meta: {
@@ -74,7 +80,7 @@ const routes = [{
 				component: newProduct,
 				name: 'newProduct',
 				meta: {
-					title: '增加产品信息'
+					title: '新产品上架'
 				}
 			},
 			{
@@ -82,27 +88,66 @@ const routes = [{
 				component: editProduct,
 				name: 'editProduct',
 				meta: {
-					title: '修改产品信息'
+					title: '现产品维护'
 				}
 			},
 			{
-				path: '/delProduct',
+				path: '/deleteProduct',
 				component: delProduct,
 				name: 'delProduct',
 				meta: {
-					title: '下架产品'
+					title: '旧产品下架'
 				}
-			}
-			
+			},
+			{
+				path: '/updateBillBase',
+				component: updateBillBase,
+				name: 'updateBillBase',
+				meta: {
+					title: '维护库存信息'
+				}
+			},
+			{
+				path: '/closeSale',
+				component: closeSale,
+				name: 'closeSale',
+				meta: {
+					title: '暂时关闭售票'
+				}
+			},
+			{
+				path: '/holiday',
+				component: holiday,
+				name: 'holiday',
+				meta: {
+					title: '节假日维护'
+				}
+			},
+			{
+				path: '/billbase',
+				component: billbase,
+				name: 'billbase',
+				meta: {
+					title: '库存详情'
+				}
+			},
+			{
+				path: '/orderList/:type',
+				component: orderList,
+				name: 'orderList',
+				meta: {
+					title: '订单综合查询 '
+				}
+			},
 		]
 	},
 // 	{ //没找到路由去系统登陆页
 // 		path: '*',
-// 		redirect: '/'
+// 		redirect: '/home'
 // 	}
 ]
 
-if (window.localStorage.getItem('token')) {
+if(window.localStorage.getItem('token')) {
 	store.commit('INIT_USER')
 }
 
@@ -112,26 +157,26 @@ let router = new Router({
 	linkActiveClass: 'active'
 })
 
-// router.beforeEach((to, from, next) => {
-// 	if (to.matched.some(record => record.meta.requireAuth)) {
-// 		if (store.state.token) {
-// 			next();
-// 		} else {
-// 			next({
-// 				path: '/',
-// 				query: {
-// 					redirect: to.fullPath
-// 				}
-// 			})
-// 		}
-// 	} else {
-// 		next();
-// 	}
-// })
+router.beforeEach((to, from, next) => {
+	if(to.matched.some(record => record.meta.requireAuth)) {
+		if(store.state.token) {
+			next();
+		} else {
+			next({
+				path: '/',
+				query: {
+					redirect: to.fullPath
+				}
+			})
+		}
+	} else {
+		next();
+	}
+})
 
 // 跳转路由页面置顶
 router.afterEach((to, from, next) => {
-  window.scrollTo(0, 0)
+	window.scrollTo(0, 0)
 })
 
 export default router;
