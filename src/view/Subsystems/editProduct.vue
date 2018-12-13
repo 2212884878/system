@@ -101,7 +101,7 @@
 		},
 		computed: {
 			//从vuex获取用户数据
-			...mapState(["uid", "token", "typeID", "classID"]),
+			...mapState(["userId", "accussToken", "typeID", "classID"]),
 		},
 		created() {
 			document.title = "修改产品";
@@ -197,6 +197,8 @@
 						this.$message.error(res.data.message);
 					}
 				}).catch(error => {
+					this.list = [];
+					this.count = 0;
 					console.log(error)
 				})
 			},
@@ -259,7 +261,6 @@
 		.el-table th div.el-input {
 			padding-left: 0;
 			padding-right: 0;
-			// line-height: 28px;
 		}
 	}
 </style>

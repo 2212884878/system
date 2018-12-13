@@ -70,9 +70,10 @@
 					this.$axios.post('http://192.168.2.29:2060/user/isLogIn',this.StringDat(data)).then((res) => {
 						var data = res.data.data;
 						if(res.data.code === 200) {
-							this.$store.commit("SAVE_TOKEN", data.name);  
-							this.$store.commit("SAVE_USERID", data.id);
+							this.$store.commit("SAVE_TOKEN", data.accussToken);  
+							this.$store.commit("SAVE_USERID", data.userId);
 							let redirect = decodeURIComponent(this.$route.query.redirect || "/home");
+							console.log(redirect)
 							this.$router.push({
 								path: redirect
 							});

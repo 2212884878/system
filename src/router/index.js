@@ -26,8 +26,6 @@ const closeSale = r => require.ensure([], () => r(require('@/view/Subsystems/clo
 const holiday = r => require.ensure([], () => r(require('@/view/Subsystems/holiday')), 'holiday')
 const orderList = r => require.ensure([], () => r(require('@/view/Subsystems/orderList')), 'orderList')
 
-
-
 Vue.use(Router)
 
 const routes = [{
@@ -36,10 +34,7 @@ const routes = [{
 	},
 	{ //子系统选择页面
 		path: '/home',
-		component: Home,
-		meta: {
-			requireAuth: true
-		}
+		component: Home
 	},
 	{
 		path: '/login',
@@ -48,9 +43,6 @@ const routes = [{
 	{ //票务管理子系统
 		path: '/SubIndex',
 		component: SubIndex,
-		meta: {
-			requireAuth: true
-		},
 		children: [{
 				path: '',
 				component: Main,
@@ -136,18 +128,18 @@ const routes = [{
 				component: orderList,
 				name: 'orderList',
 				meta: {
-					title: '订单综合查询 '
+					title: window.sessionStorage.getItem('order') || '订单综合查询 '
 				}
 			},
 		]
 	},
-// 	{ //没找到路由去系统登陆页
-// 		path: '*',
-// 		redirect: '/home'
-// 	}
+	{ //没找到路由去系统登陆页
+		path: '*',
+		redirect: '/home'
+	}
 ]
 
-if(window.localStorage.getItem('token')) {
+if(window.localStorage.getItem('accussToken')) {
 	store.commit('INIT_USER')
 }
 
@@ -158,22 +150,25 @@ let router = new Router({
 })
 
 router.beforeEach((to, from, next) => {
-	if(to.matched.some(record => record.meta.requireAuth)) {
-		if(store.state.token) {
-			next();
-		} else {
-			next({
-				path: '/',
-				query: {
-					redirect: to.fullPath
-				}
-			})
-		}
-	} else {
+	if(store.state.accussToken) {
 		next();
+	} else {
+		if(to.fullPath === '/login') {
+			next()
+		} else {
+			next('/login')
+		}
+	}
+	if(to.fullPath === '/login') {
+		if(store.state.accussToken) {
+			next({
+				path: from.fullPath
+			})
+		} else {
+			next();
+		}
 	}
 })
-
 // 跳转路由页面置顶
 router.afterEach((to, from, next) => {
 	window.scrollTo(0, 0)

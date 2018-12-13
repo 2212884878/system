@@ -582,7 +582,7 @@
 		},
 		computed:{
 			//从vuex获取用户数据
-			...mapState(["uid", "token","typeID","classID"]),
+			...mapState(["userId", "accussToken","typeID","classID"]),
 		},
 		components: {
 			quillEditor

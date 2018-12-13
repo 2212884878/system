@@ -8,8 +8,8 @@ import axios from 'axios'
 
 const store = new Vuex.Store({
 	state: {
-		token: '',
-		uid: '',
+		accussToken: '',
+		userId: '',
 		visitedViews: [], //存放所有浏览过的且不重复的路由数据
 		cachedViews: [],
 		typeID: '',
@@ -22,29 +22,29 @@ const store = new Vuex.Store({
 	mutations: {
 		//初始化用户信息
 		INIT_USER(state) {
-			if (localStorage.getItem('token')) {
-				state.token = localStorage.getItem('token')
-				state.uid = localStorage.getItem('uid')
+			if (localStorage.getItem('accussToken')) {
+				state.accussToken = localStorage.getItem('accussToken')
+				state.userId = localStorage.getItem('userId')
 			}
 		},
 		//存储用户id
 		SAVE_USERID(state, data) {
-			state.uid = data
-			localStorage.setItem('uid', data)
+			state.userId = data
+			localStorage.setItem('userId', data)
 		},
 		//存储token
 		SAVE_TOKEN(state, data) {
-			localStorage.setItem('token', data)
-			state.token = data
+			localStorage.setItem('accussToken', data)
+			state.accussToken = data
 		},
 		//注销
 		LOGOUT(state) {
-			state.token = ''
-			state.uid = ''
+			state.accussToken = ''
+			state.userId = ''
 			state.visitedViews = [];
 			state.cachedViews = [];
-			localStorage.removeItem("token");
-			localStorage.removeItem("uid");
+			localStorage.removeItem("accussToken");
+			localStorage.removeItem("userId");
 		},
 		GetTypeId(state, data) { //产品分类
 			localStorage.setItem('typeID', data)

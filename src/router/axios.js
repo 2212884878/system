@@ -12,8 +12,8 @@ axios.defaults.withCredentials = true; // axios 默认不发送cookie，需要�
 // http request 拦截器
 axios.interceptors.request.use(
   config => {
-    if (store.state.token) {
-      config.headers.Authorization = `token ${store.state.token}`;
+    if (store.state.accussToken) {
+      config.headers.Authorization = `accussToken ${store.state.accussToken}`;
     }
     return config
   },

@@ -39,6 +39,37 @@
 		},
 		watch: {
 			$route() {
+				if(this.$route.name === "orderList") { //订单tags 标签判断
+					var title = "";
+					if(this.$route.params.type === "all") {
+						title = "订单综合查询";
+					} else if(this.$route.params.type === "writeoff") {
+						title = "已核销订单查询";
+					} else if(this.$route.params.type === "alreadyover") {
+						title = "已完成订单查询";
+					} else if(this.$route.params.type === "areadypay") {
+						title = "已支付订单查询";
+					} else if(this.$route.params.type === "orverexception") {
+						title = "完成异常查询";
+					} else if(this.$route.params.type === "alreadyfree") {
+						title = "已释放订单查询";
+					} else if(this.$route.params.type === "occupation") {
+						title = "已占用订单查询";
+					} else if(this.$route.params.type === "fixed") {
+						title = "预下订单查询";
+					} else if(this.$route.params.type === "applicationreturn") {
+						title = "退款申请查询";
+					} else if(this.$route.params.type === "areadyreturn") {
+						title = "已退票订单查询";
+					} else if(this.$route.params.type === "writeoffexception") {
+						title = "占用异常查询";
+					} else {
+						title = "订单综合查询";
+					}
+					sessionStorage.setItem("order", title);
+					this.$route.meta.title = sessionStorage.getItem("order");
+				}
+
 				this.addViewTags()
 				this.moveToCurrentTag()
 			},
@@ -117,16 +148,16 @@
 	}
 </script>
 
-<style  lang="scss" scoped>
-	.tags-view-container{
-		.tags-view-wrapper{
+<style lang="scss" scoped>
+	.tags-view-container {
+		.tags-view-wrapper {
 			background: #fff;
 			height: 38px;
 			position: fixed;
 			z-index: 1000;
 			border-bottom: 1px solid #d8dce5;
 			box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .12), 0 0 3px 0 rgba(0, 0, 0, .04);
-			.tags-view-item{
+			.tags-view-item {
 				display: inline-block;
 				position: relative;
 				height: 26px;
@@ -138,14 +169,14 @@
 				font-size: 12px;
 				margin-left: 5px;
 				margin-top: 4px;
-				&:first-of-type{
+				&:first-of-type {
 					margin-left: 8px;
 				}
-				&.active{
+				&.active {
 					background-color: #42b983;
 					color: #fff;
 					border-color: #42b983;
-					&::before{
+					&::before {
 						content: '';
 						background: #fff;
 						display: inline-block;
@@ -158,7 +189,7 @@
 				}
 			}
 		}
-		.contextmenu{
+		.contextmenu {
 			margin: 0;
 			background: #fff;
 			z-index: 100;
@@ -170,11 +201,11 @@
 			font-weight: 400;
 			color: #333;
 			box-shadow: 2px 2px 3px 0 rgba(0, 0, 0, .3);
-			li{
+			li {
 				margin: 0;
 				padding: 7px 16px;
 				cursor: pointer;
-				&:hover{
+				&:hover {
 					background: #eee;
 				}
 			}
@@ -183,9 +214,9 @@
 </style>
 
 <style rel="stylesheet/scss" lang="scss">
-	.tags-view-wrapper{
-		.tags-view-item{
-			.el-icon-close{
+	.tags-view-wrapper {
+		.tags-view-item {
+			.el-icon-close {
 				width: 16px;
 				height: 16px;
 				vertical-align: 2px;
@@ -193,12 +224,12 @@
 				text-align: center;
 				transition: all .3s cubic-bezier(.645, .045, .355, 1);
 				transform-origin: 100% 50%;
-				&:before{
+				&:before {
 					transform: scale(.6);
 					display: inline-block;
 					vertical-align: -3px;
 				}
-				&:hover{
+				&:hover {
 					background-color: #b4bccc;
 					color: #fff;
 				}
