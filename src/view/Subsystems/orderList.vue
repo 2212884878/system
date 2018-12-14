@@ -20,7 +20,7 @@
 				</el-date-picker>
 			</el-col>
 			<el-col :span='9'>
-				<el-button type="primary" icon="el-icon-upload2" size="mini" round @click="search">生成</el-button>
+				<el-button type="primary" icon="el-icon-upload2" size="mini" round @click="search">搜索</el-button>
 			</el-col>
 		</el-row>
 		<!--表格-->

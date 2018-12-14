@@ -40,7 +40,7 @@
 							</el-col>
 							<el-col :span="24" class="content-wrapper">
 								<!-- {{NewList}} -->
-								<transition name="fade" mode="out-in">
+								<transition name="slide-fade" mode="out-in">
 									<router-view></router-view>
 								</transition>
 							</el-col>
@@ -98,8 +98,8 @@
 			},
 			defaultActive() {
 				if(this.$route.path.split('/').reverse().length == 3) {
-					var u =this.$route.path.split('/').reverse();
-					
+					var u = this.$route.path.split('/').reverse();
+
 					return `/${u[1]}/${u[0]}`;
 				}
 				return '/' + this.$route.path.split('/').reverse()[0];
@@ -186,6 +186,7 @@
 		padding-left: 20px;
 		padding-right: 20px;
 		border-bottom: 1px solid #B3C0D1;
+		color: #FFFFFF;
 	}
 	
 	.mb10 {
@@ -197,45 +198,47 @@
 		background: #eee;
 	}
 </style>
-<style>
-	.el-header,
-	.el-footer {
-		background-color: #16abdf;
-		color: #fff;
-		text-align: center;
-		line-height: 60px;
-	}
-	
-	.el-aside {
-		background-color: #D3DCE6;
-		color: #333;
-		text-align: center;
-		line-height: 200px;
-	}
-	
-	.el-main {
-		background-color: #FFFFFF;
-		color: #333;
-	}
-	
-	body>.el-container {
-		margin-bottom: 40px;
-	}
-	
-	.el-container:nth-child(5) .el-aside,
-	.el-container:nth-child(6) .el-aside {
-		line-height: 260px;
-	}
-	
-	.el-container:nth-child(7) .el-aside {
-		line-height: 320px;
-	}
-	
-	#Sub1Index .el-menu {
-		background: #D3DCE6;
-	}
-	
-	#Sub1Index .el-menu.el-menu--inline {
-		background: #fff;
+<style lang="scss">
+	#Sub1Index {
+		.el-header,
+		.el-footer {
+			background-color: #fff;
+			color: #000;
+			border-bottom: 1px solid #e6e6e6;
+			text-align: center;
+			line-height: 60px;
+		}
+		.el-footer{
+			border-top: 1px solid #e6e6e6;
+		}
+		.el-aside {
+			background: #545c64;
+			color: #333;
+			text-align: center;
+			line-height: 200px;
+		}
+		.el-main {
+			background-color: #FFFFFF;
+			color: #333;
+		}
+		body>.el-container {
+			margin-bottom: 40px;
+		}
+		.el-container:nth-child(5) .el-aside,
+		.el-container:nth-child(6) .el-aside {
+			line-height: 260px;
+		}
+		.el-container:nth-child(7) .el-aside {
+			line-height: 320px;
+		}
+		#Sub1Index .el-menu {
+			background: #D3DCE6;
+		}
+		#Sub1Index .el-menu.el-menu--inline {
+			background: #fff;
+		}
+		.el-submenu__title{
+			text-align: left;
+		}
 	}
 </style>

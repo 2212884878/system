@@ -1,7 +1,7 @@
 import store from '@/store/store';
 import Vue from 'vue'
 import Router from 'vue-router'
-
+import NProgress from 'nprogress'
 //登陸
 const Login = r => require.ensure([], () => r(require('@/view/login')), 'Login')
 
@@ -150,6 +150,8 @@ let router = new Router({
 })
 
 router.beforeEach((to, from, next) => {
+	// 每次切换页面时，调用进度条
+    NProgress.start();
 	if(store.state.accussToken) {
 		next();
 	} else {
@@ -171,6 +173,7 @@ router.beforeEach((to, from, next) => {
 })
 // 跳转路由页面置顶
 router.afterEach((to, from, next) => {
+	NProgress.done(); // 在即将进入新的页面组件前，关闭掉进度条
 	window.scrollTo(0, 0)
 })
 

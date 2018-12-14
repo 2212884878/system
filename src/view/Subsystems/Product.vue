@@ -676,7 +676,7 @@
 				})
 			},
 			GetFinnd() { //根据产品ID查询
-				this.$axios.get("http://192.168.2.38:5010/product/finnd/" + this.id).then(res => {
+				this.$axios.get("http://192.168.2.38:5010/product/findProductBack/" + this.id).then(res => {
 					if (res.data.code == 200) {
 						this.list = res.data.data;
 						this.setFrom();
