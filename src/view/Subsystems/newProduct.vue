@@ -646,8 +646,8 @@
 				}
 			},
 			GetList() { //拉取接口
-				this.$axios.get("http://192.168.2.28:6079/cashinterface/pull").then(res => {
-					if (res.data.code == 0) {
+				this.$axios.post("http://192.168.2.28:5009/cashinterface/pull").then(res => {
+					if (res.data.code == 200) {
 						this.count = res.data.data;
 						this.$message({
 							message: `恭喜你，拉取到${this.count}条数据`,

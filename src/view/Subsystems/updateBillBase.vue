@@ -15,12 +15,12 @@
 		</el-row>
 
 		<el-row class="mb10" :gutter="20">
-			<el-col :span='6'>
-				<el-input placeholder="请输入产品名称" v-model="productNames" size="mini">
+			<el-col :span='8'>
+				<el-input placeholder="请输入产品ID" v-model="productNames" size="mini">
 					<el-button slot="append" icon="el-icon-download" @click="dialogVisible = true,SetList(currentPage,PageSize)"></el-button>
 				</el-input>
 			</el-col>
-			<el-col :span='18'>
+			<el-col :span='16'>
 				<el-date-picker v-model="valueDate" type="daterange" size="mini" range-separator="至" start-placeholder="开始日期"
 				 end-placeholder="结束日期" format="yyyy-MM-dd" value-format="yyyy-MM-dd" @change="valueDates">
 				</el-date-picker>
@@ -35,11 +35,13 @@
 			</el-col>
 
 			<el-col :span='24' class="tabs">
-				<el-table :data="data" border highlight-current-row height="500" :header-cell-style="tableHeaderColor" v-loading="loading" element-loading-text="拼命加载数据中"
+				<el-table :data="data" border highlight-current-row height="500" :header-cell-style="tableHeaderColor" v-loading="loading1" element-loading-text="拼命加载数据中"
 				 element-loading-spinner="el-icon-loading" style="width: 100%" size="mini" ref="multipleTable" @selection-change="handleSelectionChange">
 					<el-table-column fixed prop="id" label="ID" align="center"></el-table-column>
+					
 					<el-table-column type="selection" fixed width="55" align="center">
 					</el-table-column>
+					<el-table-column fixed prop="productId" label="产品Id" align="center" min-width="280"></el-table-column>
 					<el-table-column prop="dataBaseDate" min-width="100" label="库存日期" align="center"></el-table-column>
 					<el-table-column prop="holidaySign" label="节假日" align="center" :formatter="IsTrue"></el-table-column>
 					<el-table-column prop="weekIndex" label="星期数" align="center"></el-table-column>
@@ -63,14 +65,14 @@
 						</template>
 					</el-table-column>
 					<el-table-column prop="salePrice" label="销售价格" align="center"></el-table-column>
-					<el-table-column prop="enableSign" label="是否启动卖票" align="center">
+					<!--<el-table-column prop="enableSign" label="是否启动卖票" align="center">
 						<template slot-scope="scope">
 							<el-checkbox-group v-model="scope.row.enableSign">
 								<el-checkbox label="是" name="saleType" :true-label="1" :false-label="0"></el-checkbox>
 							</el-checkbox-group>
 						</template>
-					</el-table-column>
-					<el-table-column prop="createDate" label="创建日期" align="center"></el-table-column>
+					</el-table-column>-->
+					<el-table-column prop="createDate" label="创建日期" align="center" min-width="150"></el-table-column>
 					<el-table-column prop="bs" label="PC网页" align="center">
 						<template slot-scope="scope">
 							<el-checkbox-group v-model="scope.row.bs">
@@ -173,6 +175,7 @@
 		data() {
 			return {
 				loading: false,
+				loading1: true,
 				list: [],
 				currentPage: 1, //分页标识 至PageSizes
 				count: 0,
@@ -246,10 +249,11 @@
 					beginDate: this.sData,
 					endDate: this.eData
 				}
-
+				this.loading1 = true;
 				this.$axios.get("http://192.168.2.42:6030/stock/createPriceCalendar", {
 					params: data
 				}).then(res => {
+					this.loading1 = false;
 					if (res.data.code == 200) {
 						this.data = res.data.data.list || [];
 						console.log(this.data)
@@ -260,6 +264,7 @@
 				}).catch(error => {
 					this.data = [];
 					this.count2 = 0;
+					this.loading1 = false;
 					console.log(error)
 				})
 			},
@@ -321,9 +326,11 @@
 					typeId: t,
 					productName: n
 				}
+				this.loading = true;
 				this.$axios.get("http://192.168.2.38:5010/product/findProduct", {
 					params: data
 				}).then(res => {
+					this.loading = false;
 					if (res.data.code == 200) {
 						this.list = res.data.data.list || [];
 						console.log(this.list)
@@ -334,6 +341,7 @@
 				}).catch(error => {
 					this.list = [];
 					this.count = 0;
+					this.loading = false;
 					console.log(error)
 				})
 			},
@@ -354,9 +362,9 @@
 				}
 			},
 			openDetails(row, event, column) { //单击表格一行获取数据
-				console.log(row.productName)
+				console.log(row.id)
 				//document.getElementsByName("radio")[row.index].setAttribute("checked", true)
-				this.StringProductId = row.productName;
+				this.StringProductId = row.id;
 			},
 			SetRuleForm() { //选中行赋值
 				if (this.StringProductId != "") {

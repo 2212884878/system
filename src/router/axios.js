@@ -4,7 +4,7 @@ import store from '../store/store'
 import router from './index'
 
 // axios 配置
-// axios.defaults.timeout = 5000;
+axios.defaults.timeout = 5000;
 // axios.defaults.baseURL = 'http://';
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 axios.defaults.withCredentials = true; // axios 默认不发送cookie，需要全局设置true发送cookie

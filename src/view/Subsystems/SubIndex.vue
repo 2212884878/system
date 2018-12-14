@@ -163,9 +163,7 @@
 		float: right;
 		margin-right: 20px;
 		cursor: pointer;
-		&:hover {
-			color: #fff;
-		}
+		
 	}
 	
 	.breadcrumb-container {

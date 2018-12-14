@@ -138,7 +138,7 @@ const store = new Vuex.Store({
 		SetTypeID(context) {
 			axios({
 				method: 'get',
-				url: '../../../static/typeId.json'
+				url: './static/typeId.json'
 			}).then((res) => {
 				let list = res.data.data;
 				context.commit('GetTypeId', list);
@@ -147,7 +147,7 @@ const store = new Vuex.Store({
 		SetClassID(context) {
 			axios({
 				method: 'get',
-				url: '../../../static/classId.json'
+				url: './static/classId.json'
 			}).then((res) => {
 				let list = res.data.data;
 				context.commit('GetClassId', list);
@@ -156,7 +156,7 @@ const store = new Vuex.Store({
 		SetDayType(context) {
 			axios({
 				method: 'get',
-				url: '../../../static/DayType.json'
+				url: './static/DayType.json'
 			}).then((res) => {
 				let list = res.data.data;
 				context.commit('GetDayType', list);
