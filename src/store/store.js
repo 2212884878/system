@@ -10,6 +10,7 @@ const store = new Vuex.Store({
 	state: {
 		accussToken: '',
 		userId: '',
+		userName:'',
 		visitedViews: [], //存放所有浏览过的且不重复的路由数据
 		cachedViews: [],
 		typeID: '',
@@ -25,6 +26,7 @@ const store = new Vuex.Store({
 			if (localStorage.getItem('accussToken')) {
 				state.accussToken = localStorage.getItem('accussToken')
 				state.userId = localStorage.getItem('userId')
+				state.userName = localStorage.getItem('userName')
 			}
 		},
 		//存储用户id
@@ -37,14 +39,21 @@ const store = new Vuex.Store({
 			localStorage.setItem('accussToken', data)
 			state.accussToken = data
 		},
+		//存储userName
+		SAVE_USERNAME(state, data) {
+			localStorage.setItem('userName', data)
+			state.userName = data
+		},
 		//注销
 		LOGOUT(state) {
-			state.accussToken = ''
-			state.userId = ''
+			state.accussToken = '';
+			state.userId = '';
+			state.userName = '';
 			state.visitedViews = [];
 			state.cachedViews = [];
 			localStorage.removeItem("accussToken");
 			localStorage.removeItem("userId");
+			localStorage.removeItem("userName");
 		},
 		GetTypeId(state, data) { //产品分类
 			localStorage.setItem('typeID', data)

@@ -25,7 +25,10 @@
 
 			</el-aside>
 			<el-container>
-				<el-header>你好，黎孝義<span class="logout" @click="qite">退出登录</span></el-header>
+				<el-header>
+					<!--你好，黎孝義<span class="logout" @click="qite">退出登录</span>-->
+					<navs></navs>
+				</el-header>
 				<el-main class="pt0" :style="{height: height + 'px'}">
 					<!--
                 	作者：lixiaoyi
@@ -56,6 +59,7 @@
 
 <script>
 	import TagsView from "@/components/TagsView.vue";
+	import navs from "@/components/naver.vue";
 	import {
 		mapState
 	} from "vuex";
@@ -69,7 +73,8 @@
 			}
 		},
 		components: {
-			TagsView
+			TagsView,
+			navs
 		},
 		computed: {
 			//从vuex获取用户数据
@@ -118,10 +123,7 @@
 			this.$store.dispatch('SetDayType')
 		},
 		methods: {
-			qite() {
-				this.$store.commit("LOGOUT");
-				this.$router.push('/');
-			},
+			
 			handleopen(key, keyPath) {
 				console.log(key, keyPath);
 			},
@@ -216,7 +218,7 @@
 			line-height: 200px;
 		}
 		.el-main {
-			background-color: #FFFFFF;
+			background-color: #eee;
 			color: #333;
 		}
 		body>.el-container {

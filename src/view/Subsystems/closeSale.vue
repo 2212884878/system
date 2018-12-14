@@ -42,29 +42,29 @@
 					<el-table-column type="selection" fixed width="55" align="center">
 					</el-table-column>
 					<el-table-column fixed prop="productId" label="产品Id" align="center" min-width="280"></el-table-column>
-					<!--<el-table-column prop="dataBaseDate" min-width="100" label="库存日期" align="center"></el-table-column>
+					<el-table-column prop="dataBaseDate" min-width="100" label="库存日期" align="center"></el-table-column>
 					<el-table-column prop="holidaySign" label="节假日" align="center" :formatter="IsTrue"></el-table-column>
-					<el-table-column prop="weekIndex" label="星期数" align="center"></el-table-column>-->
+					<el-table-column prop="weekIndex" label="星期数" align="center"></el-table-column>
 					<el-table-column prop="holidayType" min-width="100" label="节假日类型" align="center"></el-table-column>
-					<el-table-column prop="dataBaseTotalCount" min-width="100" label="当天总库存数" align="center"></el-table-column>
-					<el-table-column prop="alreadyUseCount" min-width="100" label="已售出库存数" align="center"></el-table-column>
-					<el-table-column prop="occupationCount" min-width="100" label="已占用库存数" align="center"></el-table-column>
-					<el-table-column prop="originalPrice" label="原价" align="center" min-width="100">
+					<el-table-column prop="dataBaseTotalCount" min-width="100" label="当天总库存数" align="right"></el-table-column>
+					<el-table-column prop="alreadyUseCount" min-width="100" label="已售出库存数" align="right"></el-table-column>
+					<el-table-column prop="occupationCount" min-width="100" label="已占用库存数" align="right"></el-table-column>
+					<el-table-column prop="originalPrice" label="原价" align="right" min-width="100">
 						<template slot-scope="scope">
 							<el-tag size="medium">{{ scope.row.originalPrice }}</el-tag>
 						</template>
 					</el-table-column>
-					<el-table-column prop="returnPrice" label="退票价格" align="center" min-width="100">
+					<el-table-column prop="returnPrice" label="退票价格" align="right" min-width="100">
 						<template slot-scope="scope">
 							<el-tag size="medium">{{ scope.row.returnPrice }}</el-tag>
 						</template>
 					</el-table-column>
-					<el-table-column prop="settlementPrice" label="结算价格" align="center" min-width="100">
+					<el-table-column prop="settlementPrice" label="结算价格" align="right" min-width="100">
 						<template slot-scope="scope">
 							<el-tag size="medium">{{ scope.row.settlementPrice }}</el-tag>
 						</template>
 					</el-table-column>
-					<el-table-column prop="salePrice" label="销售价格" align="center"></el-table-column>
+					<el-table-column prop="salePrice" label="销售价格" align="right"></el-table-column>
 					<el-table-column prop="enableSign" label="是否启动卖票" min-width="100" align="center">
 						<template slot-scope="scope">
 							<el-checkbox-group v-model="scope.row.enableSign">
@@ -213,7 +213,7 @@
 			...mapState(["userId", "accussToken", "typeID", "classID"]),
 		},
 		created() {
-			document.title = "维护库存信息";
+			document.title = "暂时关闭售票";
 		},
 		mounted() {
 			this.createPriceCalendar();

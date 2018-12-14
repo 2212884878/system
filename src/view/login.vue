@@ -72,6 +72,7 @@
 						if(res.data.code === 200) {
 							this.$store.commit("SAVE_TOKEN", data.accussToken);  
 							this.$store.commit("SAVE_USERID", data.userId);
+							this.$store.commit("SAVE_USERNAME", data.name);
 							let redirect = decodeURIComponent(this.$route.query.redirect || "/home");
 							console.log(redirect)
 							this.$router.push({

@@ -46,32 +46,38 @@
 					<el-table-column prop="holidaySign" label="节假日" align="center" :formatter="IsTrue"></el-table-column>
 					<el-table-column prop="weekIndex" label="星期数" align="center"></el-table-column>
 					<el-table-column prop="holidayType" min-width="100" label="节假日类型" align="center"></el-table-column>
-					<el-table-column prop="dataBaseTotalCount" min-width="100" label="当天总库存数" align="center"></el-table-column>
-					<el-table-column prop="alreadyUseCount" min-width="100" label="已售出库存数" align="center"></el-table-column>
-					<el-table-column prop="occupationCount" min-width="100" label="已占用库存数" align="center"></el-table-column>
-					<el-table-column prop="originalPrice" label="原价" align="center" min-width="100">
+					<el-table-column prop="dataBaseTotalCount" min-width="100" label="当天总库存数" align="right"></el-table-column>
+					<el-table-column prop="alreadyUseCount" min-width="100" label="已售出库存数" align="right"></el-table-column>
+					<el-table-column prop="occupationCount" min-width="100" label="已占用库存数" align="right"></el-table-column>
+					<el-table-column prop="originalPrice" label="原价" align="right" min-width="100">
 						<template slot-scope="scope">
-							<el-input size="mini" v-model.number="scope.row.originalPrice"></el-input>
+							<el-input size="mini" v-model.number="scope.row.originalPrice" align="right"></el-input>
 						</template>
 					</el-table-column>
-					<el-table-column prop="returnPrice" label="退票价格" align="center" min-width="100">
+					<el-table-column prop="returnPrice" label="退票价格" align="right" min-width="100">
 						<template slot-scope="scope">
-							<el-input size="mini" v-model.number="scope.row.returnPrice"></el-input>
+							<el-input size="mini" v-model.number="scope.row.returnPrice" align="right"></el-input>
 						</template>
 					</el-table-column>
-					<el-table-column prop="settlementPrice" label="结算价格" align="center" min-width="100">
+					<el-table-column prop="settlementPrice" label="结算价格" align="right" min-width="100">
 						<template slot-scope="scope">
 							<el-input size="mini" v-model.number="scope.row.settlementPrice"></el-input>
 						</template>
 					</el-table-column>
-					<el-table-column prop="salePrice" label="销售价格" align="center"></el-table-column>
-					<!--<el-table-column prop="enableSign" label="是否启动卖票" align="center">
+					<el-table-column prop="salePrice" label="销售价格" align="right"></el-table-column>
+					<el-table-column prop="enableSign" label="是否启动卖票" align="center" min-width="100">
 						<template slot-scope="scope">
-							<el-checkbox-group v-model="scope.row.enableSign">
+							<!--<el-checkbox-group v-model="scope.row.enableSign">
 								<el-checkbox label="是" name="saleType" :true-label="1" :false-label="0"></el-checkbox>
-							</el-checkbox-group>
+							</el-checkbox-group>-->
+							<template v-if="scope.row.enableSign == 1">
+								<el-tag size="medium" type="success">是</el-tag>
+							</template>
+							<template v-else>
+								<el-tag size="medium" type="danger">否</el-tag>
+							</template>
 						</template>
-					</el-table-column>-->
+					</el-table-column>
 					<el-table-column prop="createDate" label="创建日期" align="center" min-width="150"></el-table-column>
 					<el-table-column prop="bs" label="PC网页" align="center">
 						<template slot-scope="scope">
