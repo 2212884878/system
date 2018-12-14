@@ -35,10 +35,11 @@
 			</el-col>
 
 			<el-col :span='24' class="tabs">
-				<el-table :data="data" border highlight-current-row height="500" :header-cell-style="tableHeaderColor" v-loading="loading1" element-loading-text="拼命加载数据中"
-				 element-loading-spinner="el-icon-loading" style="width: 100%" size="mini" ref="multipleTable" @selection-change="handleSelectionChange">
+				<el-table :data="data" border highlight-current-row height="500" :header-cell-style="tableHeaderColor" v-loading="loading1"
+				 element-loading-text="拼命加载数据中" element-loading-spinner="el-icon-loading" style="width: 100%" size="mini" ref="multipleTable"
+				 @selection-change="handleSelectionChange">
 					<el-table-column fixed prop="id" label="ID" align="center"></el-table-column>
-					
+
 					<el-table-column type="selection" fixed width="55" align="center">
 					</el-table-column>
 					<el-table-column fixed prop="productId" label="产品Id" align="center" min-width="280"></el-table-column>
@@ -52,16 +53,19 @@
 					<el-table-column prop="originalPrice" label="原价" align="right" min-width="100">
 						<template slot-scope="scope">
 							<el-input size="mini" v-model.number="scope.row.originalPrice" align="right"></el-input>
+							<el-tag size="medium">{{ scope.row.originalPrice }}</el-tag>
 						</template>
 					</el-table-column>
 					<el-table-column prop="returnPrice" label="退票价格" align="right" min-width="100">
 						<template slot-scope="scope">
 							<el-input size="mini" v-model.number="scope.row.returnPrice" align="right"></el-input>
+							<el-tag size="medium">{{ scope.row.returnPrice }}</el-tag>
 						</template>
 					</el-table-column>
 					<el-table-column prop="settlementPrice" label="结算价格" align="right" min-width="100">
 						<template slot-scope="scope">
 							<el-input size="mini" v-model.number="scope.row.settlementPrice"></el-input>
+							<el-tag size="medium">{{ scope.row.settlementPrice }}</el-tag>
 						</template>
 					</el-table-column>
 					<el-table-column prop="salePrice" label="销售价格" align="right"></el-table-column>
@@ -214,7 +218,7 @@
 			this.createPriceCalendar();
 		},
 		methods: {
-			valueDates(val) {//开始结束时间处理
+			valueDates(val) { //开始结束时间处理
 				if (val) {
 					this.sData = this.valueDate[0];
 					this.eData = this.valueDate[1];
@@ -231,7 +235,7 @@
 			},
 			editBill() { //批量修改信息
 				var list = this.multipleSelection;
-				this.$axios.put("http://192.168.2.42:6030/stock/updateBatchPrice",list).then(res => {
+				this.$axios.put("http://192.168.2.42:6030/stock/updateBatchPrice", list).then(res => {
 					if (res.data.code == 200) {
 						this.$message({
 							message: `更新了${list.length} 条数据`,
@@ -244,7 +248,7 @@
 				}).catch(error => {
 					console.log(error)
 				})
-				
+
 			},
 			createPriceCalendar() { //获取库存列表
 				console.log(this.valueDate);
@@ -362,8 +366,8 @@
 				column,
 				rowIndex,
 				columnIndex
-			}) {// 修改table header的背景色
-				if(rowIndex === 0) {
+			}) { // 修改table header的背景色
+				if (rowIndex === 0) {
 					return 'background-color: #f5f7fa;color: #909399;font-weight: 700;'
 				}
 			},
@@ -404,5 +408,17 @@
 
 	.tabs.click .el-table__body tr.current-row>td {
 		background: #66B1FF;
+	}
+
+	.tabs .el-input {
+		display: none
+	}
+
+	.tabs .current-row .el-input {
+		display: block
+	}
+
+	.tabs .current-row .el-input+span {
+		display: none
 	}
 </style>
