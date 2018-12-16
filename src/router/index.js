@@ -7,6 +7,7 @@ const Login = r => require.ensure([], () => r(require('@/view/login')), 'Login')
 
 //首頁
 const Home = r => require.ensure([], () => r(require('@/view/home/home')), 'Home')
+const Center = r => require.ensure([], () => r(require('@/view/center/center')), 'Center')
 
 //票务管理子系统子系统
 const SubIndex = r => require.ensure([], () => r(require('@/view/Subsystems/SubIndex')), 'SubIndex')
@@ -24,7 +25,10 @@ const billbase = r => require.ensure([], () => r(require('@/view/Subsystems/bill
 const updateBillBase = r => require.ensure([], () => r(require('@/view/Subsystems/updateBillBase')), 'updateBillBase')
 const closeSale = r => require.ensure([], () => r(require('@/view/Subsystems/closeSale')), 'closeSale')
 const holiday = r => require.ensure([], () => r(require('@/view/Subsystems/holiday')), 'holiday')
+
+//订单相关
 const orderList = r => require.ensure([], () => r(require('@/view/Subsystems/orderList')), 'orderList')
+const orderInfo = r => require.ensure([], () => r(require('@/view/Subsystems/orderInfo')), 'orderInfo')
 
 Vue.use(Router)
 
@@ -57,6 +61,14 @@ const routes = [{
 				name: 'main',
 				meta: {
 					title: '主页'
+				}
+			},
+			{ //个人中心
+				path: '/center',
+				component: Center,
+				name:'Center',
+				meta: {
+					title: '个人中心'
 				}
 			},
 			{
@@ -131,6 +143,14 @@ const routes = [{
 					title: window.sessionStorage.getItem('order') || '订单综合查询 '
 				}
 			},
+			{
+				path:'/orderInfo/:id',
+				component: orderInfo,
+				name:'orderInfo',
+				meta:{
+					title:'订单详情'
+				}
+			}
 		]
 	},
 	{ //没找到路由去系统登陆页

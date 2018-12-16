@@ -22,7 +22,7 @@
 			</el-col>
 			<el-col :span='16'>
 				<el-date-picker v-model="valueDate" type="daterange" size="mini" range-separator="至" start-placeholder="开始日期"
-				 end-placeholder="结束日期" format="yyyy-MM-dd" value-format="yyyy-MM-dd" @change="valueDates">
+				 end-placeholder="结束日期" format="yyyy-MM-dd" value-format="yyyy-MM-dd" @change="valueDates" :picker-options="pickerOptions0">
 				</el-date-picker>
 			</el-col>
 		</el-row>
@@ -30,15 +30,17 @@
 		<el-row>
 			<el-col :span='24' class="mb10">
 				<el-button type="primary" icon="el-icon-refresh" size="mini" round @click="createPriceCalendar">刷新表格</el-button>
-				<el-button type="primary" icon="el-icon-upload2" size="mini" round @click="createPriceCalendar">生成</el-button>
+				<el-button type="primary" icon="el-icon-upload2" size="mini" round @click="SetId">生成</el-button>
 				<el-button type="primary" icon="el-icon-check" size="mini" round @click="editBill">提交</el-button>
+				<el-button type="primary" icon="el-icon-delete" size="mini" round @click="del">清空条件</el-button>
 			</el-col>
 
 			<el-col :span='24' class="tabs">
-				<el-table :data="data" border highlight-current-row height="500" :header-cell-style="tableHeaderColor" v-loading="loading" element-loading-text="拼命加载数据中"
-				 element-loading-spinner="el-icon-loading" style="width: 100%" size="mini" ref="multipleTable" @selection-change="handleSelectionChange">
+				<el-table :data="data" border highlight-current-row height="500" :header-cell-style="tableHeaderColor" v-loading="loading"
+				 element-loading-text="拼命加载数据中" element-loading-spinner="el-icon-loading" style="width: 100%" size="mini" ref="multipleTable"
+				 @selection-change="handleSelectionChange">
 					<el-table-column fixed prop="id" label="ID" align="center"></el-table-column>
-					
+
 					<el-table-column type="selection" fixed width="55" align="center">
 					</el-table-column>
 					<el-table-column fixed prop="productId" label="产品Id" align="center" min-width="280"></el-table-column>
@@ -205,7 +207,12 @@
 				eData: '',
 				multipleSelection: [],
 				dialogVisible: false,
-				data: []
+				data: [],
+				pickerOptions0: {
+					disabledDate(time) {
+						return time.getTime() < Date.now();
+					}
+				},
 			};
 		},
 		computed: {
@@ -219,7 +226,7 @@
 			this.createPriceCalendar();
 		},
 		methods: {
-			valueDates(val) {//开始结束时间处理
+			valueDates(val) { //开始结束时间处理
 				if (val) {
 					this.sData = this.valueDate[0];
 					this.eData = this.valueDate[1];
@@ -236,7 +243,7 @@
 			},
 			editBill() { //批量修改信息
 				var list = this.multipleSelection;
-				this.$axios.put("http://192.168.2.42:6030/stock/updateBatchPrice",list).then(res => {
+				this.$axios.put("http://192.168.2.42:6030/stock/updateBatchPrice", list).then(res => {
 					if (res.data.code == 200) {
 						this.$message({
 							message: `更新了${list.length} 条数据`,
@@ -249,7 +256,7 @@
 				}).catch(error => {
 					console.log(error)
 				})
-				
+
 			},
 			createPriceCalendar() { //获取库存列表
 				console.log(this.valueDate);
@@ -276,6 +283,41 @@
 					this.count2 = 0;
 					console.log(error)
 				})
+			},
+			SetId() { //生成
+				if(this.isEmpty(this.productNames) || this.isEmpty(this.sData) || this.isEmpty(this.eData)){
+					this.$message.error("产品ID和开始结束时间不能为空");
+					return;
+				}
+				let data = {
+					productId: this.productNames,
+					beginDate: this.sData,
+					endDate: this.eData
+				}
+				this.loading1 = true;
+				this.data = [];
+				this.count2 = 0;
+				this.$axios.get("http://192.168.2.42:6030/stock/addStock", {
+					params: data
+				}).then(res => {
+					this.loading1 = false;
+					if(res.data.code == 200) {
+						this.data = res.data.data.list || [];
+						console.log(this.data)
+						this.count2 = res.data.data.total || 0;
+					} else {
+						this.$message.error(res.data.message);
+					}
+				}).catch(error => {
+					this.loading1 = false;
+					console.log(error)
+				})
+			},
+			del() { //清空
+				this.productNames = '';
+				this.valueDate = '';
+				this.valueDates(false);
+				this.createPriceCalendar();
 			},
 			handleSelectionChange(val) { //库存table选中
 				console.log(val)
@@ -362,8 +404,8 @@
 				column,
 				rowIndex,
 				columnIndex
-			}) {// 修改table header的背景色
-				if(rowIndex === 0) {
+			}) { // 修改table header的背景色
+				if (rowIndex === 0) {
 					return 'background-color: #f5f7fa;color: #909399;font-weight: 700;'
 				}
 			},
@@ -404,9 +446,10 @@
 
 	.tabs.click .el-table__body tr.current-row>td {
 		background: #66B1FF;
-		
+
 	}
-	.tabs tr>td .el-tag{
+
+	.tabs tr>td .el-tag {
 		min-width: 70px;
 	}
 </style>

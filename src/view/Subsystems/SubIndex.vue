@@ -68,8 +68,7 @@
 			return {
 				items: [],
 				height: 0,
-				systemName: '',
-				urls: "/main"
+				systemName: ''
 			}
 		},
 		components: {

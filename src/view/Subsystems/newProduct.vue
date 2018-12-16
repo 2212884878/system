@@ -57,7 +57,7 @@
 					<el-form-item label="产品类型" prop="classId" style="width: 100%;">
 						<el-select v-model="ruleForm.classId" placeholder="请选择产品类型">
 							<template v-for="item in classID">
-								<el-option :label="item.name" :value="item.id"></el-option>
+								<el-option :label="item.name" :value="item.id" :key="item.id"></el-option>
 							</template>
 						</el-select>
 					</el-form-item>
@@ -66,7 +66,7 @@
 					<el-form-item label="产品分类" prop="typeId">
 						<el-select v-model="ruleForm.typeId" placeholder="请选择产品分类">
 							<template v-for="item in typeID">
-								<el-option :label="item.name" :value="item.id"></el-option>
+								<el-option :label="item.name" :value="item.id" :key="item.id"></el-option>
 							</template>
 						</el-select>
 					</el-form-item>
@@ -432,6 +432,7 @@
 				},
 				imgs: '',
 				dialogVisible: false, //显示载入弹框
+				pId:'',
 				ruleForm: { //表单
 					parkId: '',
 					parkName: '',
@@ -580,15 +581,15 @@
 				}
 			}
 		},
-		computed:{
+		computed: {
 			//从vuex获取用户数据
-			...mapState(["userId", "accussToken","typeID","classID"]),
+			...mapState(["userId", "accussToken", "typeID", "classID"]),
 		},
 		components: {
 			quillEditor
 		},
 		mounted() {
-			
+
 		},
 		methods: {
 			// 筛选变色
@@ -672,7 +673,7 @@
 				this.ruleForm.returnPrice = that.productPrice;
 				this.ruleForm.settlementPrice = that.productPrice;
 				this.ruleForm.salePrice = that.productPrice;
-
+				this.pId = that.productId;
 				this.ruleForm.classId = that.productType == '00' ? 0 : '';
 				this.ruleForm.typeId = that.isTheatre == '1' ? 6 : 0;
 
@@ -685,7 +686,7 @@
 				this.$refs[formName].validate((valid) => {
 					if (valid) {
 						console.log(this.ruleForm);
-						this.$axios.post("http://192.168.2.38:5010/product/save", this.ruleForm, {
+						this.$axios.post("http://192.168.2.38:5010/product/save?pId="+this.pId, this.ruleForm, {
 							headers: {
 								'Content-type': 'application/json'
 							}
@@ -771,11 +772,12 @@
 					productName: this.productName || '',
 					parkName: this.parkName || ''
 				}
+				this.list = [];
+				this.count = 0;
 				this.$axios.post("http://192.168.2.28:5009/cashinterface/unbind", this.StringDat(data)).then(res => {
 					if (res.data.code == 200) {
 						this.list = res.data.data.list;
 						this.count = res.data.data.total;
-						console.log(this.list);
 					} else {
 						this.$message.error(res.data.message);
 						return;
@@ -791,7 +793,8 @@
 				row.index = rowIndex;
 			},
 			openDetails(row, event, column) { //单击表格一行获取数据
-				console.log(row.index)
+				console.log(row)
+				console.log(document.getElementsByName("radio"))
 				document.getElementsByName("radio")[row.index].setAttribute("checked", true)
 				this.rows = row;
 			}

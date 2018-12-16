@@ -27,6 +27,8 @@ const store = new Vuex.Store({
 				state.accussToken = localStorage.getItem('accussToken')
 				state.userId = localStorage.getItem('userId')
 				state.userName = localStorage.getItem('userName')
+				state.typeID = localStorage.getItem('typeID')
+				state.classID = localStorage.getItem('classID')
 			}
 		},
 		//存储用户id

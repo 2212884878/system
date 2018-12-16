@@ -39,6 +39,15 @@ Vue.prototype.StringDat = function(data) {
 	}
 	return ret
 }
+// 注册一个为空判断
+Vue.prototype.isEmpty = (obj) => {
+	if(typeof obj == "undefined" || obj == null || obj == ""){
+		return true;
+    }else{
+        return false;
+    }
+}
+
 // 基于Quill、适用于Vue2的富文本编辑器。
 import VueQuillEditor from 'vue-quill-editor'
 Vue.use(VueQuillEditor)
