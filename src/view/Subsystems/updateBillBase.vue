@@ -29,7 +29,7 @@
 		<el-row>
 			<el-col :span='24' class="mb10">
 				<el-button type="primary" icon="el-icon-refresh" size="mini" round @click="createPriceCalendar">刷新表格</el-button>
-				<el-button type="primary" icon="el-icon-upload2" size="mini" round @click="SetId">生成</el-button>
+				<el-button type="primary" icon="el-icon-upload2" size="mini" round @click="createPriceCalendar">生成</el-button>
 				<el-button type="primary" icon="el-icon-check" size="mini" round @click="editBill">提交</el-button>
 				<el-button type="primary" icon="el-icon-delete" size="mini" round @click="del">清空条件</el-button>
 			</el-col>
@@ -260,7 +260,6 @@
 				}
 				this.loading1 = true;
 				this.data = [];
-				this.count2 = 0;
 				this.$axios.get("http://192.168.2.42:6030/stock/createPriceCalendar", {
 					params: data
 				}).then(res => {
@@ -291,14 +290,12 @@
 				}
 				this.loading1 = true;
 				this.data = [];
-				this.count2 = 0;
 				this.$axios.get("http://192.168.2.42:6030/stock/addStock", {
 					params: data
 				}).then(res => {
 					this.loading1 = false;
 					if(res.data.code == 200) {
 						this.data = res.data.data.list || [];
-						console.log(this.data)
 						this.count2 = res.data.data.total || 0;
 					} else {
 						this.$message.error(res.data.message);
@@ -444,6 +441,9 @@
 	
 	.tabs.click .el-table__body tr.current-row>td {
 		background: #66B1FF;
+	}
+	.tabs tr>td .el-tag {
+		min-width: 77px;
 	}
 	
 	.tabs .from .el-input {

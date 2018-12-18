@@ -696,6 +696,7 @@
 									message: res.data.message,
 									type: 'success'
 								});
+								this.resetForm('ruleForm');
 							} else {
 								this.$message({
 									message: res.data.message,
@@ -714,7 +715,8 @@
 				});
 			},
 			resetForm(formName) { //重置表单
-				this.ruleForm.parkID = "";
+				
+				this.ruleForm.parkId = "";
 				this.ruleForm.productCode = "";
 				this.ruleForm.parentId = "";
 				this.ruleForm.pictureId = "";

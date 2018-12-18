@@ -173,6 +173,14 @@ const store = new Vuex.Store({
 				context.commit('GetDayType', list);
 			});
 		},
+		// 前端 登出
+		FedLogOut({ commit }) {
+			return new Promise(resolve => {
+				commit('LOGOUT')
+				// removeToken()
+				resolve()
+			})
+		}
 	}
 })
 

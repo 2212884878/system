@@ -280,7 +280,6 @@
 					}
 				}).catch(error => {
 					this.data = [];
-					this.count2 = 0;
 					console.log(error)
 				})
 			},
@@ -296,7 +295,6 @@
 				}
 				this.loading1 = true;
 				this.data = [];
-				this.count2 = 0;
 				this.$axios.get("http://192.168.2.42:6030/stock/addStock", {
 					params: data
 				}).then(res => {
@@ -450,6 +448,6 @@
 	}
 
 	.tabs tr>td .el-tag {
-		min-width: 70px;
+		min-width: 77px;
 	}
 </style>

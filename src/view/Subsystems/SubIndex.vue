@@ -14,7 +14,8 @@
               	时间：2018-11-19
               	描述：菜单
              -->
-				<el-menu :show-timeout="200" :default-active="defaultActive" class="el-menu-vertical-demo" @open="handleopen" @close="handleclose" @select="handleselect" unique-opened router>
+				<el-menu :show-timeout="200" :default-active="defaultActive" class="el-menu-vertical-demo" @open="handleopen"
+				 @close="handleclose" @select="handleselect" unique-opened router>
 					<template v-for="(item,index) in NewList">
 						<el-submenu :index="index+''">
 							<template slot="title"><i class="el-icon-menu"></i>{{item.title}}</template>
@@ -84,8 +85,8 @@
 					tempArr = [],
 					list = [];
 				oldArr.push({})
-				for(let i = 0; i < oldArr.length - 1; i++) {
-					if(oldArr[i].grouptext === oldArr[i + 1].grouptext) {
+				for (let i = 0; i < oldArr.length - 1; i++) {
+					if (oldArr[i].grouptext === oldArr[i + 1].grouptext) {
 						tempArr.push(oldArr[i]);
 					} else {
 						tempArr.push(oldArr[i]);
@@ -101,7 +102,7 @@
 				return list;
 			},
 			defaultActive() {
-				if(this.$route.path.split('/').reverse().length == 3) {
+				if (this.$route.path.split('/').reverse().length == 3) {
 					var u = this.$route.path.split('/').reverse();
 
 					return `/${u[1]}/${u[0]}`;
@@ -110,19 +111,25 @@
 			}
 		},
 		mounted() {
-			if(sessionStorage.getItem("systemName") == 'undefined' || sessionStorage.getItem("systemName") == null || sessionStorage.getItem("systemName") == "") {
+			if (sessionStorage.getItem("systemName") == 'undefined' || sessionStorage.getItem("systemName") == null ||
+				sessionStorage.getItem("systemName") == "") {
 				sessionStorage.setItem("systemName", this.$route.query.name);
 			}
 
 			this.systemName = sessionStorage.getItem("systemName");
 			this.height = document.documentElement.clientHeight - 120;
+			const that = this;
+			window.onresize = function temp() {
+				that.height = document.documentElement.clientHeight - 120;
+			};
+
 			this.getNav();
 			this.$store.dispatch('SetTypeID')
 			this.$store.dispatch('SetClassID')
 			this.$store.dispatch('SetDayType')
 		},
 		methods: {
-			
+
 			handleopen(key, keyPath) {
 				console.log(key, keyPath);
 			},
@@ -130,10 +137,10 @@
 				console.log(key, keyPath);
 			},
 			handleselect(a, b) {
-				console.log(a, b);
+				// console.log(a, b);
 			},
 			getNav() {
-				if(this.userId && this.systemName) { //获取导航菜单
+				if (this.userId && this.systemName) { //获取导航菜单
 					let data = {
 						userId: this.userId,
 						systemName: this.systemName
@@ -141,7 +148,7 @@
 					this.$axios.get("http://192.168.2.29:2080/theMenu/findNav", {
 						params: data
 					}).then((res) => {
-						if(res.data.code === 200) {
+						if (res.data.code === 200) {
 							this.items = res.data.data;
 						} else {
 							this.$message.error("出错");
@@ -154,7 +161,8 @@
 					this.$message.error("没登录");
 				}
 			}
-		}
+		},
+
 	}
 </script>
 
@@ -164,20 +172,21 @@
 		float: right;
 		margin-right: 20px;
 		cursor: pointer;
-		
+
 	}
-	
+
 	.breadcrumb-container {
 		.title {
 			width: 200px;
 			float: left;
 			color: #475669;
 		}
+
 		.breadcrumb-inner {
 			float: right;
 		}
 	}
-	
+
 	.el-aside .loge {
 		height: 60px;
 		line-height: 60px;
@@ -187,11 +196,11 @@
 		border-bottom: 1px solid #B3C0D1;
 		color: #FFFFFF;
 	}
-	
+
 	.mb10 {
 		margin-bottom: 10px;
 	}
-	
+
 	.pt0 {
 		padding: 0;
 		background: #eee;
@@ -199,6 +208,7 @@
 </style>
 <style lang="scss">
 	#Sub1Index {
+
 		.el-header,
 		.el-footer {
 			background-color: #fff;
@@ -207,36 +217,45 @@
 			text-align: center;
 			line-height: 60px;
 		}
-		.el-footer{
+
+		.el-footer {
 			border-top: 1px solid #e6e6e6;
 		}
+
 		.el-aside {
 			background: #545c64;
 			color: #333;
 			text-align: center;
 			line-height: 200px;
 		}
+
 		.el-main {
 			background-color: #eee;
 			color: #333;
 		}
+
 		body>.el-container {
 			margin-bottom: 40px;
 		}
+
 		.el-container:nth-child(5) .el-aside,
 		.el-container:nth-child(6) .el-aside {
 			line-height: 260px;
 		}
+
 		.el-container:nth-child(7) .el-aside {
 			line-height: 320px;
 		}
+
 		#Sub1Index .el-menu {
 			background: #D3DCE6;
 		}
+
 		#Sub1Index .el-menu.el-menu--inline {
 			background: #fff;
 		}
-		.el-submenu__title{
+
+		.el-submenu__title {
 			text-align: left;
 		}
 	}
