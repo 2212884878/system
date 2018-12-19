@@ -73,7 +73,8 @@
 
 				<section class="pages">
 					<el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage"
-					 :page-sizes="PageSizes" :page-size="PageSize" layout="total, sizes, prev, pager, next, jumper" :total="count">
+					 :page-sizes="PageSizes" :page-size="PageSize" layout="total, sizes, prev, pager, next, jumper" :total="count"
+					 v-if="count > 0">
 					</el-pagination>
 				</section>
 			</el-col>
@@ -230,9 +231,11 @@
 		.text-alginr {
 			text-align: right;
 		}
-		.mb10{
+
+		.mb10 {
 			margin-bottom: 10px;
 		}
+
 		.pages {
 			height: 32px;
 			text-align: center;

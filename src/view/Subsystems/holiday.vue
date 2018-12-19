@@ -117,7 +117,7 @@
 
 				<section class="pages">
 					<el-pagination @size-change="handleSizeChange2" @current-change="handleCurrentChange2" :current-page="currentPage2"
-					 :page-sizes="PageSizes" :page-size="PageSize2" layout="total, sizes, prev, pager, next, jumper" :total="count2">
+					 :page-sizes="PageSizes" :page-size="PageSize2" layout="total, sizes, prev, pager, next, jumper" :total="count2" v-if="count2 > 0">
 					</el-pagination>
 				</section>
 			</el-col>
@@ -165,7 +165,7 @@
 
 				<section class="pages">
 					<el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage"
-					 :page-sizes="PageSizes" :page-size="PageSize" layout="total, sizes, prev, pager, next, jumper" :total="count">
+					 :page-sizes="PageSizes" :page-size="PageSize" layout="total, sizes, prev, pager, next, jumper" :total="count" v-if="count > 0">
 					</el-pagination>
 				</section>
 			</div>

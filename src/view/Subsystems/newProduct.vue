@@ -205,6 +205,9 @@
 			<!-- 说明 -->
 			<el-row class="el-form-item">
 				<el-col :span="24">
+					<el-upload class="avatar-uploaders" :action="importFileUrl" :show-file-list="false" :on-success="(res) => { return handleSuccess(res,'111')}" :format="['jpg','jpeg','png','gif']" :max-size="2048" multiple v-show="true">
+						<button icon="ios-cloud-upload-outline"></button>
+					</el-upload>
 					<el-tabs v-model="activeName" type="border-card">
 						<el-tab-pane label="使用说明" name="first">
 							<el-form-item label="使用说明" class="lhn">
@@ -354,6 +357,7 @@
 	import {
 		mapState
 	} from "vuex";
+	import {GetImages} from '@/utils/quill'
 	export default {
 		data() {
 			var validatePass = (rule, value, callback) => {
@@ -408,7 +412,8 @@
 					'align': []
 				}],
 				['link'],
-				['clean']
+				['clean'],
+				['image']
 			];
 			return {
 				productName: '', //列表过滤字段
@@ -426,13 +431,25 @@
 				importFileUrl: 'http://192.168.2.34:2600/staticResource/uploadFile', //上传图片地址
 				editorOption: { //富文本编辑器
 					modules: {
-						toolbar: toolcontext
+						toolbar: {
+							container: toolcontext, // 工具栏
+							handlers: {
+								'image': function(value) {
+									if (value) {
+										// alert('自定义图片')
+										document.querySelector('.avatar-uploaders input').click()
+									} else {
+										this.quill.format('image', false);
+									}
+								}
+							}
+						}
 					},
 					placeholder: '最多输入2000字节'
 				},
 				imgs: '',
 				dialogVisible: false, //显示载入弹框
-				pId:'',
+				pId: '',
 				ruleForm: { //表单
 					parkId: '',
 					parkName: '',
@@ -686,7 +703,7 @@
 				this.$refs[formName].validate((valid) => {
 					if (valid) {
 						console.log(this.ruleForm);
-						this.$axios.post("http://192.168.2.38:5010/product/save?pId="+this.pId, this.ruleForm, {
+						this.$axios.post("http://192.168.2.38:5010/product/save?pId=" + this.pId, this.ruleForm, {
 							headers: {
 								'Content-type': 'application/json'
 							}
@@ -715,7 +732,7 @@
 				});
 			},
 			resetForm(formName) { //重置表单
-				
+
 				this.ruleForm.parkId = "";
 				this.ruleForm.productCode = "";
 				this.ruleForm.parentId = "";
@@ -751,6 +768,27 @@
 			handleAvatarSuccess3(res, file) { //上传图片
 				this.ruleForm.pictureId = file.response.data.id;
 				console.log(this.ruleForm.pictureId)
+			},
+			handleSuccess(res,index) { //富文本上传图片
+				// 获取富文本组件实例
+				let quill = this.$refs.UseContent.quill
+				// 如果上传成功
+				console.log(index)
+				if (res.code == 200) {
+					// 获取光标所在位置
+					let length = quill.getSelection().index;
+					this.$axios.get("http://192.168.2.34:2600/staticResource/selectFileById?id="+res.data.id).then(res => {//获取图片地址
+						if(res.data.code == 200) {
+							// 插入图片，res为服务器返回的图片链接地址
+							quill.insertEmbed(length, 'image', GetImages(res.data.data.fileName))
+							// 调整光标到最后
+							quill.setSelection(length + 1)
+						}
+					})
+				} else {
+					// 提示信息，需引入Message
+					this.$message.error('图片插入失败')
+				}
 			},
 			beforeAvatarUpload(file) { //上传图片大小限制
 				const extension = file.name.split('.')[1] === 'jpg'

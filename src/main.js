@@ -18,17 +18,26 @@ import 'bootstrap-table/dist/locale/bootstrap-table-zh-CN.min.js'
 
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
-NProgress.configure({     
-    easing: 'ease',  // 动画方式    
-    speed: 500,  // 递增进度条的速度    
-    showSpinner: false, // 是否显示加载ico    
-    trickleSpeed: 200, // 自动递增间隔    
-    minimum: 0.3 // 初始化时的最小百分比
+NProgress.configure({
+	easing: 'ease', // 动画方式    
+	speed: 500, // 递增进度条的速度    
+	showSpinner: false, // 是否显示加载ico    
+	trickleSpeed: 200, // 自动递增间隔    
+	minimum: 0.3 // 初始化时的最小百分比
 })
 
 import Axios from './router/axios'
 Vue.prototype.$axios = Axios
-
+import {
+	getRequest,
+	postRequest,
+	deleteRequest,
+	putRequest
+} from './router/api';
+Vue.prototype.getRequest = getRequest;
+Vue.prototype.postRequest = postRequest;
+Vue.prototype.deleteRequest = deleteRequest;
+Vue.prototype.putRequest = putRequest;
 
 
 // 注册一个data对象转换字符串方法
@@ -41,11 +50,11 @@ Vue.prototype.StringDat = function(data) {
 }
 // 注册一个为空判断
 Vue.prototype.isEmpty = (obj) => {
-	if(typeof obj == "undefined" || obj == null || obj == ""){
+	if (typeof obj == "undefined" || obj == null || obj == "") {
 		return true;
-    }else{
-        return false;
-    }
+	} else {
+		return false;
+	}
 }
 
 // 基于Quill、适用于Vue2的富文本编辑器。

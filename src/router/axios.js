@@ -8,7 +8,7 @@ import {
 } from 'element-ui'
 
 // axios 配置
-axios.defaults.timeout = 5000;
+axios.defaults.timeout = 10000;
 // axios.defaults.baseURL = 'http://';
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 axios.defaults.withCredentials = true; // axios 默认不发送cookie，需要全局设置true发送cookie
@@ -19,6 +19,17 @@ axios.interceptors.request.use(
 		if (store.state.accussToken) {
 			config.headers.Authorization = `accussToken ${store.state.accussToken}`;
 		}
+// 		if (config.method == 'post') {
+// 			config.data = {
+// 				...config.data,
+// 				_t: Date.parse(new Date()) / 1000,
+// 			}
+// 		} else if (config.method == 'get') {
+// 			config.params = {
+// 				_t: Date.parse(new Date()) / 1000,
+// 				...config.params
+// 			}
+// 		}
 		return config
 	},
 	err => {
@@ -57,25 +68,27 @@ axios.interceptors.response.use(
 			return response
 		}
 	},
-	error => {
-		//     if (error.response) {
-		//       switch (error.response.status) {
-		//         case 401:
-		//           // 401 清除token信息并跳转到登录页面
-		//           store.commit('LOGOUT')
-		//           router.push({
-		//             path: '/'
-		//           })
-		//       }
-		//     }
-		//     return Promise.reject(error.response.data)
-		console.debug("err" + error) // for debug
-		Message({
-			message: error.message,
-			type: 'error',
-			duration: 3 * 1000
-		})
-		return Promise.reject(error)
+	err => {
+		// 		Message({
+		// 			message: err.response.data.message,
+		// 			type: 'err',
+		// 			duration: 3 * 1000
+		// 		})
+		// 		return Promise.reject(err)
+		if (err.response.status == 504 || err.response.status == 404) {
+			Message.error({
+				message: `服务器被吃了⊙﹏⊙∥  状态码:${err.response.status}`
+			});
+		} else if (err.response.status == 403) {
+			Message.error({
+				message: `权限不足,请联系管理员!  状态码:${err.response.status}`
+			});
+		} else {
+			Message.error({
+				message: `未知错误!   状态码:${err.response.status}`
+			});
+		}
+		return Promise.resolve(err);
 	})
 
 export default axios
