@@ -33,3 +33,11 @@
         margin-top: 20px;
     }
 }
+.clearfix:before,
+.clearfix:after {
+display: table;
+content: "";
+}
+.clearfix:after {
+clear: both
+}

@@ -38,6 +38,12 @@
 <script>
 	export default {
 		name: 'naver',
+		props :{
+			paths:{
+				type:String,
+				default: '/center'
+			}
+		},
 		data() {
 			var validatePass = (rule, value, callback) => {
 				if (value === '') {
@@ -91,7 +97,8 @@
 				this.$router.push('/home');
 			},
 			center() {
-				this.$router.push('/center');
+				// console.log(this.paths)
+				this.$router.push(this.paths);
 			},
 			handleClose() {
 				this.dialogVisible = false;

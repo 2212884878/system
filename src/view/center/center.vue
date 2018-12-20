@@ -19,10 +19,10 @@
 				<el-card shadow="hover">
 					<el-form>
 						<el-form-item label="姓名:">
-							<lable>{{$store.state.userName}}</lable>
+							{{$store.state.userName}}
 						</el-form-item>
 						<el-form-item label="手机号码:">
-							<lable>10010</lable>
+							10010
 						</el-form-item>
 						
 					</el-form>

@@ -2,7 +2,7 @@
 	<!--
     	作者：lixiaoyi
     	时间：2018-12-12
-    	描述：暂时关闭售票
+    	描述：维护库存信息
     -->
 	<section class="newPr">
 		<el-row class="borderm2">
@@ -16,23 +16,27 @@
 
 		<el-row class="mb10" :gutter="20">
 			<el-col :span='8'>
-				<el-input placeholder="请输入产品ID" v-model="productNames" size="mini">
-					<el-button slot="append" icon="el-icon-download" @click="dialogVisible = true,SetList(currentPage,PageSize)"></el-button>
+				<el-input placeholder="请拉取产品" v-model="productNames" size="mini">
+					<el-button slot="append" icon="el-icon-download" @click="dialogVisible = true,SetList(currentPage,PageSize)">拉取</el-button>
 				</el-input>
 			</el-col>
-			<el-col :span='16'>
+			<el-col :span='8'>
 				<el-date-picker v-model="valueDate" type="daterange" size="mini" range-separator="至" start-placeholder="开始日期"
 				 end-placeholder="结束日期" format="yyyy-MM-dd" value-format="yyyy-MM-dd" @change="valueDates" :picker-options="pickerOptions0">
 				</el-date-picker>
+			</el-col>
+			<el-col :span="6">
+				<el-button type="primary" icon="el-icon-upload2" size="mini" round @click="SetId">生成</el-button>
+				<el-button type="primary" icon="el-icon-delete" size="mini" round @click="del">清空条件</el-button>
 			</el-col>
 		</el-row>
 		<!--表格-->
 		<el-row>
 			<el-col :span='24' class="mb10">
 				<el-button type="primary" icon="el-icon-refresh" size="mini" round @click="createPriceCalendar">刷新表格</el-button>
-				<el-button type="primary" icon="el-icon-upload2" size="mini" round @click="SetId">生成</el-button>
+				<!-- <el-button type="primary" icon="el-icon-upload2" size="mini" round @click="SetId">生成</el-button> -->
 				<el-button type="primary" icon="el-icon-check" size="mini" round @click="editBill">提交</el-button>
-				<el-button type="primary" icon="el-icon-delete" size="mini" round @click="del">清空条件</el-button>
+				<!-- <el-button type="primary" icon="el-icon-delete" size="mini" round @click="del">清空条件</el-button> -->
 			</el-col>
 
 			<el-col :span='24' class="tabs">
@@ -119,14 +123,15 @@
 
 				<section class="pages">
 					<el-pagination @size-change="handleSizeChange2" @current-change="handleCurrentChange2" :current-page="currentPage2"
-					 :page-sizes="PageSizes" :page-size="PageSize2" layout="total, sizes, prev, pager, next, jumper" :total="count2" v-if="count2 > 0">
+					 :page-sizes="PageSizes" :page-size="PageSize2" layout="total, sizes, prev, pager, next, jumper" :total="count2"
+					 v-if="count2>0">
 					</el-pagination>
 				</section>
 			</el-col>
 		</el-row>
 
 		<el-dialog title="产品信息列表" :visible.sync="dialogVisible" width="80%" center>
-			<div v-loading="loading" class="tabs click">
+			<div v-loading="loading" element-loading-text="拼命加载数据中" element-loading-spinner="el-icon-loading" class="tabs click">
 				<el-table :data="list" border highlight-current-row style="width: 100%" size="medium" @row-click="openDetails"
 				 :row-class-name="tableRowClassName" height="500">
 
@@ -167,7 +172,8 @@
 
 				<section class="pages">
 					<el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage"
-					 :page-sizes="PageSizes" :page-size="PageSize" layout="total, sizes, prev, pager, next, jumper" :total="count" v-if="count > 0">
+					 :page-sizes="PageSizes" :page-size="PageSize" layout="total, sizes, prev, pager, next, jumper" :total="count"
+					 v-if="count>0">
 					</el-pagination>
 				</section>
 			</div>
@@ -189,6 +195,7 @@
 		data() {
 			return {
 				loading: false,
+				loading1: true,
 				list: [],
 				currentPage: 1, //分页标识 至PageSizes
 				count: 0,
@@ -200,12 +207,14 @@
 				productName: '', //3个过滤字段
 				typeId: '',
 				classId: '',
-				productNames: '',
-				StringProductId: '',
-				valueDate: '',
-				sData: '',
-				eData: '',
-				multipleSelection: [],
+				productNames: '', //选中产品名称
+				productIds: '', //选中产品ID
+				proName: '', //行点击产品名称
+				proID: '', //行点击产品ID
+				valueDate: '', //总时间段
+				sData: '', //开始时间
+				eData: '', //结束时间
+				multipleSelection: [], //choeckbox选中值
 				dialogVisible: false,
 				data: [],
 				pickerOptions0: {
@@ -220,7 +229,7 @@
 			...mapState(["userId", "accussToken", "typeID", "classID"]),
 		},
 		created() {
-			document.title = "暂时关闭售票";
+			document.title = "维护库存信息";
 		},
 		mounted() {
 			this.createPriceCalendar();
@@ -259,60 +268,60 @@
 
 			},
 			createPriceCalendar() { //获取库存列表
-				console.log(this.valueDate);
 				let data = {
 					pageNum: this.currentPage2,
 					pageSize: this.PageSize2,
-					productId: this.productNames,
+					productId: this.productIds,
 					beginDate: this.sData,
 					endDate: this.eData
 				}
-
-				this.$axios.get("http://192.168.2.42:6030/stock/createPriceCalendar", {
+				this.loading1 = true;
+				this.data = [];
+				this.getRequest("http://192.168.2.42:6030/stock/createPriceCalendar", {
 					params: data
 				}).then(res => {
+					this.loading1 = false;
 					if (res.data.code == 200) {
 						this.data = res.data.data.list || [];
-						console.log(this.data)
 						this.count2 = res.data.data.total || 0;
 					} else {
 						this.$message.error(res.data.message);
 					}
 				}).catch(error => {
 					this.data = [];
-					console.log(error)
+					this.count2 = 0;
+					this.loading1 = false;
 				})
 			},
 			SetId() { //生成
-				if(this.isEmpty(this.productNames) || this.isEmpty(this.sData) || this.isEmpty(this.eData)){
+				if (this.isEmpty(this.productIds) || this.isEmpty(this.sData) || this.isEmpty(this.eData)) {
 					this.$message.error("产品ID和开始结束时间不能为空");
 					return;
 				}
 				let data = {
-					productId: this.productNames,
+					productId: this.productIds,
 					beginDate: this.sData,
 					endDate: this.eData
 				}
 				this.loading1 = true;
 				this.data = [];
-				this.$axios.get("http://192.168.2.42:6030/stock/addStock", {
-					params: data
-				}).then(res => {
+				this.$axios.post("http://192.168.2.42:6030/stock/addStock", this.StringDat(data)).then(res => {
 					this.loading1 = false;
-					if(res.data.code == 200) {
-						this.data = res.data.data.list || [];
-						console.log(this.data)
-						this.count2 = res.data.data.total || 0;
+					if (res.data.code == 200) {
+						this.data = res.data.data || [];
+						this.count2 = 0;
 					} else {
 						this.$message.error(res.data.message);
 					}
 				}).catch(error => {
+					this.data = [];
+					this.count2 = 0;
 					this.loading1 = false;
-					console.log(error)
 				})
 			},
 			del() { //清空
 				this.productNames = '';
+				this.productIds = '';
 				this.valueDate = '';
 				this.valueDates(false);
 				this.createPriceCalendar();
@@ -375,12 +384,13 @@
 					typeId: t,
 					productName: n
 				}
+				this.loading = true;
 				this.$axios.get("http://192.168.2.38:5010/product/findProduct", {
 					params: data
 				}).then(res => {
+					this.loading = false;
 					if (res.data.code == 200) {
 						this.list = res.data.data.list || [];
-						console.log(this.list)
 						this.count = res.data.data.total || 0;
 					} else {
 						this.$message.error(res.data.message);
@@ -388,7 +398,7 @@
 				}).catch(error => {
 					this.list = [];
 					this.count = 0;
-					console.log(error)
+					this.loading = false;
 				})
 			},
 			tableRowClassName({
@@ -408,13 +418,14 @@
 				}
 			},
 			openDetails(row, event, column) { //单击表格一行获取数据
-				console.log(row.id)
 				//document.getElementsByName("radio")[row.index].setAttribute("checked", true)
-				this.StringProductId = row.id;
+				this.proName = row.productName;
+				this.proID = row.id;
 			},
 			SetRuleForm() { //选中行赋值
-				if (this.StringProductId != "") {
-					this.productNames = this.StringProductId;
+				if (this.proName != "" && this.proID != "") {
+					this.productNames = this.proName;
+					this.productIds = this.proID;
 					this.dialogVisible = false;
 				} else {
 					this.$message({
@@ -428,7 +439,8 @@
 		watch: {
 			dialogVisible(val) { //弹框关闭清空选中值
 				if (!val) {
-					this.StringProductId = "";
+					this.proName = "";
+					this.proID = "";
 				}
 			}
 		}
@@ -444,10 +456,21 @@
 
 	.tabs.click .el-table__body tr.current-row>td {
 		background: #66B1FF;
-
 	}
 
 	.tabs tr>td .el-tag {
 		min-width: 77px;
+	}
+
+	.tabs .from .el-input {
+		display: none
+	}
+
+	.tabs .from .current-row .el-input {
+		display: block
+	}
+
+	.tabs .from .current-row .el-input+span {
+		display: none
 	}
 </style>

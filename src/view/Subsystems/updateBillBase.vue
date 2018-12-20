@@ -47,11 +47,11 @@
 					<el-table-column type="selection" fixed width="55" align="center">
 					</el-table-column>
 					
-					<el-table-column fixed label="产品名称" align="center" min-width="280" v-if="productNames">
+					<!-- <el-table-column fixed label="产品名称" align="center" min-width="280" v-if="productNames">
 						<template slot-scope="scope">
 							{{productNames}}
 						</template>
-					</el-table-column>
+					</el-table-column> -->
 					
 					<el-table-column prop="dataBaseDate" min-width="100" label="库存日期" align="center"></el-table-column>
 					<el-table-column prop="holidaySign" label="节假日" align="center" :formatter="IsTrue">

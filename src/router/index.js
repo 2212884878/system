@@ -30,6 +30,12 @@ const holiday = r => require.ensure([], () => r(require('@/view/Subsystems/holid
 const orderList = r => require.ensure([], () => r(require('@/view/Subsystems/orderList')), 'orderList')
 const orderInfo = r => require.ensure([], () => r(require('@/view/Subsystems/orderInfo')), 'orderInfo')
 
+
+// 官网子系统首页
+const Uccn = r => require.ensure([], () => r(require('@/view/uccn/Uccn')), 'Uccn')
+const UccnIndex = r => require.ensure([], () => r(require('@/view/uccn/index')), 'UccnIndex')
+
+
 Vue.use(Router)
 
 const routes = [{
@@ -66,7 +72,7 @@ const routes = [{
 			{ //个人中心
 				path: '/center',
 				component: Center,
-				name:'Center',
+				name: 'Center',
 				meta: {
 					title: '个人中心'
 				}
@@ -144,14 +150,40 @@ const routes = [{
 				}
 			},
 			{
-				path:'/orderInfo/:id',
+				path: '/orderInfo/:id',
 				component: orderInfo,
-				name:'orderInfo',
-				meta:{
-					title:'订单详情'
+				name: 'orderInfo',
+				meta: {
+					title: '订单详情'
 				}
 			}
 		]
+	},
+	{ //官网管理子系统
+		path: '/Uccn',
+		component: Uccn,
+		children: [{
+			path: '',
+			component: Main,
+			name: 'uccn-defa',
+			meta: {
+				title: '主页'
+			}
+		}, { //个人中心
+			path: '/UccnCenter',
+			component: Center,
+			name: 'UccnCenter',
+			meta: {
+				title: '个人中心'
+			}
+		}, {
+			path: '/UccnIndex/:id',
+			component: UccnIndex,
+			name: 'UccnIndex',
+			meta: {
+				title: '静态资源增加'
+			}
+		}]
 	},
 	{ //没找到路由去系统登陆页
 		path: '*',
@@ -159,7 +191,7 @@ const routes = [{
 	}
 ]
 
-if(window.localStorage.getItem('accussToken')) {
+if (window.localStorage.getItem('accussToken')) {
 	store.commit('INIT_USER')
 }
 
@@ -171,18 +203,18 @@ let router = new Router({
 
 router.beforeEach((to, from, next) => {
 	// 每次切换页面时，调用进度条
-    NProgress.start();
-	if(store.state.accussToken) {
+	NProgress.start();
+	if (store.state.accussToken) {
 		next();
 	} else {
-		if(to.fullPath === '/login') {
+		if (to.fullPath === '/login') {
 			next()
 		} else {
 			next('/login')
 		}
 	}
-	if(to.fullPath === '/login') {
-		if(store.state.accussToken) {
+	if (to.fullPath === '/login') {
+		if (store.state.accussToken) {
 			next({
 				path: from.fullPath
 			})
@@ -194,7 +226,7 @@ router.beforeEach((to, from, next) => {
 // 跳转路由页面置顶
 router.afterEach((to, from, next) => {
 	NProgress.done(); // 在即将进入新的页面组件前，关闭掉进度条
-	window.scrollTo(0, 0)
+	window.scrollTo(0,0)
 })
 
 export default router;

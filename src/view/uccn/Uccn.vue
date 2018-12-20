@@ -2,45 +2,48 @@
 	<!--
     	作者：lixiaoyi
     	时间：2018-12-12
-    	描述：票务管理子系统
+    	描述：官网
     -->
 	<div id="Sub1Index">
 		<el-container>
 			<!--导航-->
 			<el-aside width="200px">
 				<div class="loge">{{systemName}}</div>
-				<!--
-              	作者：lixiaoyi
-              	时间：2018-11-19
-              	描述：菜单
-             -->
 				<el-menu :show-timeout="200" :default-active="defaultActive" class="el-menu-vertical-demo" @open="handleopen"
 				 @close="handleclose" @select="handleselect" unique-opened router>
-					<template v-for="(item,index) in NewList">
+					<!-- <template v-for="(item,index) in NewList">
 						<el-submenu :index="index+''">
 							<template slot="title"><i class="el-icon-menu"></i>{{item.title}}</template>
 							<el-menu-item v-for="child in item[0]" :index="child.url" :key="child.url"><i class="el-icon-setting"></i>{{child.text}}</el-menu-item>
 						</el-submenu>
-					</template>
+					</template> -->
+					<el-menu-item index="/UccnIndex/001">
+						<i class="el-icon-setting"></i>
+						<span slot="title">首页</span>
+					</el-menu-item>
+					<el-menu-item index="/UccnIndex/002">
+						<i class="el-icon-setting"></i>
+						<span slot="title">首页2</span>
+					</el-menu-item>
+					<el-menu-item index="/UccnIndex/003">
+						<i class="el-icon-setting"></i>
+						<span slot="title">首页3</span>
+					</el-menu-item>
 				</el-menu>
 
 			</el-aside>
 			<el-container>
 				<el-header>
-					<navs></navs>
+					<navs :paths="UccnCenter"></navs>
 				</el-header>
-				<el-main class="pt0" :style="{height: height + 'px'}">
-					<!--
-                	作者：lixiaoyi
-                	时间：2018-11-19
-                	描述：主體
-                -->
+				<el-main class="pt0" :style="{height: height + 'px'}" ref="main">
 					<section class="content-container">
 						<div class="grid-content bg-purple-light">
-							<el-col :span="24" class="breadcrumb-container">
-								<!--标签导航-->
+
+							<!-- <el-col :span="24" class="breadcrumb-container">
 								<tags-view class="mb10"></tags-view>
-							</el-col>
+							</el-col> -->
+
 							<el-col :span="24" class="content-wrapper">
 								<!-- {{NewList}} -->
 								<transition name="slide-fade" mode="out-in">
@@ -54,13 +57,13 @@
 				<el-footer>版权信息</el-footer>
 			</el-container>
 		</el-container>
-		
+
 	</div>
 </template>
 
 <script>
 	import goTop from "@/components/goTop.vue";
-	import TagsView from "@/components/TagsView.vue";
+	// import TagsView from "@/components/TagsView.vue";
 	import navs from "@/components/naver.vue";
 	import {
 		mapState
@@ -70,11 +73,11 @@
 			return {
 				items: [],
 				height: 0,
-				systemName: ''
+				systemName: '',
+				UccnCenter:'/UccnCenter'
 			}
 		},
 		components: {
-			TagsView,
 			navs,
 			'v-goTop': goTop
 		},
@@ -100,25 +103,23 @@
 					list[k] = Array(v);
 					list[k]['title'] = v[0].grouptext;
 				})
-				console.log(list)
 				return list;
 			},
 			defaultActive() {
 				if (this.$route.path.split('/').reverse().length == 3) {
 					var u = this.$route.path.split('/').reverse();
-
 					return `/${u[1]}/${u[0]}`;
 				}
 				return '/' + this.$route.path.split('/').reverse()[0];
 			}
 		},
 		mounted() {
-			if (sessionStorage.getItem("systemName") == 'undefined' || sessionStorage.getItem("systemName") == null ||
-				sessionStorage.getItem("systemName") == "") {
-				sessionStorage.setItem("systemName", this.$route.query.name);
+			if (sessionStorage.getItem("UccnName") == 'undefined' || sessionStorage.getItem("UccnName") == null ||
+				sessionStorage.getItem("UccnName") == "") {
+				sessionStorage.setItem("UccnName", this.$route.query.name);
 			}
 
-			this.systemName = sessionStorage.getItem("systemName");
+			this.systemName = sessionStorage.getItem("UccnName");
 			this.height = document.documentElement.clientHeight - 120;
 			const that = this;
 			window.onresize = function temp() {
@@ -164,7 +165,12 @@
 				}
 			}
 		},
-
+		watch:{
+// 			$route() {
+// 				console.log(this.$refs.main)
+// 				this.$refs.main.scrollTo = 0;
+// 			}
+		}
 	}
 </script>
 

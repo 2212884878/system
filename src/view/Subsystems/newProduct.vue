@@ -205,19 +205,19 @@
 			<!-- 说明 -->
 			<el-row class="el-form-item">
 				<el-col :span="24">
-					<el-upload class="avatar-uploaders" :action="importFileUrl" :show-file-list="false" :on-success="(res) => { return handleSuccess(res,'111')}" :format="['jpg','jpeg','png','gif']" :max-size="2048" multiple v-show="true">
+					<el-upload class="avatar-uploaders" :action="importFileUrl" :show-file-list="false" :on-success="handleSuccess" :format="['jpg','jpeg','png','gif']" :max-size="2048" multiple v-show="true">
 						<button icon="ios-cloud-upload-outline"></button>
 					</el-upload>
 					<el-tabs v-model="activeName" type="border-card">
 						<el-tab-pane label="使用说明" name="first">
 							<el-form-item label="使用说明" class="lhn">
-								<quill-editor ref="UseContent" v-model="ruleForm.useContent" :options="editorOption" @change="alertValue($event,ruleForm.useContent,2000)">
+								<quill-editor ref="UseContent" v-model="ruleForm.useContent" :options="editorOption" @change="alertValue($event,ruleForm.useContent,2000)" @focus="_vueQuill($event)">
 								</quill-editor>
 							</el-form-item>
 						</el-tab-pane>
 						<el-tab-pane label="退款说明" name="second">
 							<el-form-item label="退款说明" class="lhn">
-								<quill-editor ref="returnContent" v-model="ruleForm.returnContent" :options="editorOption" @change="alertValue($event,ruleForm.returnContent,2000)">
+								<quill-editor ref="returnContent" v-model="ruleForm.returnContent" :options="editorOption" @change="alertValue($event,ruleForm.returnContent,2000)" @focus="_vueQuill($event)">
 								</quill-editor>
 							</el-form-item>
 						</el-tab-pane>
@@ -229,7 +229,7 @@
 						</el-tab-pane> -->
 						<el-tab-pane label="备注" name="fourth">
 							<el-form-item label="备注" class="lhn">
-								<quill-editor ref="remark" v-model="ruleForm.remark" :options="editorOption" @change="alertValue($event,ruleForm.remark,2000)">
+								<quill-editor ref="remark" v-model="ruleForm.remark" :options="editorOption" @change="alertValue($event,ruleForm.remark,2000)" @focus="_vueQuill($event)">
 								</quill-editor>
 							</el-form-item>
 						</el-tab-pane>
@@ -245,14 +245,14 @@
 					<el-tabs v-model="activeName2" type="border-card">
 						<el-tab-pane label="Directions for use" name="first">
 							<el-form-item label="Directions for use" class="lhn">
-								<quill-editor ref="useContentEnglish" v-model="ruleForm.useContentEnglish" :options="editorOption" @change="alertValue($event,ruleForm.useContentEnglish,2000)">
+								<quill-editor ref="useContentEnglish" v-model="ruleForm.useContentEnglish" :options="editorOption" @change="alertValue($event,ruleForm.useContentEnglish,2000)" @focus="_vueQuill($event)">
 								</quill-editor>
 							</el-form-item>
 						</el-tab-pane>
 						<el-tab-pane label="Refund instructions" name="second">
 							<el-form-item label="Refund instructions" class="lhn">
 								<quill-editor ref="returnContentEnglish" v-model="ruleForm.returnContentEnglish" :options="editorOption"
-								 @change="alertValue($event,ruleForm.returnContentEnglish,2000)">
+								 @change="alertValue($event,ruleForm.returnContentEnglish,2000)" @focus="_vueQuill($event)">
 								</quill-editor>
 							</el-form-item>
 						</el-tab-pane>
@@ -264,7 +264,7 @@
 						</el-tab-pane> -->
 						<el-tab-pane label="note" name="fourth">
 							<el-form-item label="note" class="lhn">
-								<quill-editor ref="remarkEnglisn" v-model="ruleForm.remarkEnglisn" :options="editorOption" @change="alertValue($event,ruleForm.remarkEnglisn,2000)">
+								<quill-editor ref="remarkEnglisn" v-model="ruleForm.remarkEnglisn" :options="editorOption" @change="alertValue($event,ruleForm.remarkEnglisn,2000)" @focus="_vueQuill($event)">
 								</quill-editor>
 							</el-form-item>
 						</el-tab-pane>
@@ -416,6 +416,7 @@
 				['image']
 			];
 			return {
+				vuequillref:'',//富文本ref标识
 				productName: '', //列表过滤字段
 				parkName: '',
 				currentPage: 1, //分页信息
@@ -769,11 +770,13 @@
 				this.ruleForm.pictureId = file.response.data.id;
 				console.log(this.ruleForm.pictureId)
 			},
-			handleSuccess(res,index) { //富文本上传图片
+			_vueQuill(str) {
+				this.vuequillref = str;
+			},
+			handleSuccess(res) { //富文本上传图片
 				// 获取富文本组件实例
-				let quill = this.$refs.UseContent.quill
+				let quill = this.vuequillref;
 				// 如果上传成功
-				console.log(index)
 				if (res.code == 200) {
 					// 获取光标所在位置
 					let length = quill.getSelection().index;
