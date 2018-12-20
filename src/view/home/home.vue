@@ -3,14 +3,14 @@
 		<div class="bg-home-color">
 			<div class="containers">
 				<ul>
-					<!-- <li v-for="item in list">
-						<router-link :to="{path:'/Sub1Index'}"><img :src="item.picPath" :alt="item.systemname"/><p>{{item.systemname}}</p></router-link>
-					</li> -->
-					<li><router-link :to="{path:'/SubIndex',query:{name:'票务管理子系统'}}"><img src="../../assets/active-bg1.png"/><p>票务管理子系统</p></router-link></li>
-					<li><router-link :to="{path:'/Uccn',query:{name:'官网管理子系统'}}"><img src="../../assets/active-bg1.png"/><p>官网管理子系统</p></router-link></li>
+					<li v-for="item in list">
+						<router-link :to="{path:'/Sub1Index',query:{name:item.systemname}}"><img :src="item.picPath" :alt="item.systemname"/><p>{{item.systemname}}</p></router-link>
+					</li>
+					<!-- <li><router-link :to="{path:'/SubIndex',query:{name:'票务管理子系统'}}"><img src="../../assets/active-bg1.png"/><p>票务管理子系统</p></router-link></li>
+					<li><router-link :to="{path:'/Uccn',query:{name:'官网管理子系统'}}"><img src="../../assets/mine-icon.png"/><p>官网管理子系统</p></router-link></li>
 					<li><router-link :to="{path:'/home'}"><img src="../../assets/active-bg1.png"/><p>APP管理子系统</p></router-link></li>
 					<li><router-link :to="{path:'/home'}"><img src="../../assets/active-bg1.png"/><p>用户管理子系统</p></router-link></li>
-					<li><router-link :to="{path:'/home'}"><img src="../../assets/active-bg1.png"/><p>报表子管理</p></router-link></li>
+					<li><router-link :to="{path:'/home'}"><img src="../../assets/active-bg1.png"/><p>报表子管理</p></router-link></li> -->
 				</ul>
 			</div>
 		</div>
@@ -27,18 +27,18 @@
 		methods: {
 			//系统菜单
 			GetFindSystemNameAll() {
-				this.$axios.get("http://192.168.2.29:2520/systemName/findSystemNameAll").then(res => {
+				this.$axios.get("http://192.168.2.29:2060/permissions/getSystName").then(res => {
 					if(res.data.code === 200) {
 						this.list = res.data.data;
 					}else{
 						this.$message.error("加载数据出错");
-						this.$store.commit("LOGOUT");
+						// this.$store.commit("LOGOUT");
 					}
 				})
 			}
 		},
 		created() {
-			// this.GetFindSystemNameAll();
+			this.GetFindSystemNameAll();
 		},
 		mounted() {
 			this.$store.dispatch('delAllViews');
@@ -85,10 +85,7 @@
 					width: 147px;
 					height: 167px;
 					display: inline-block;
-					transition: all 1s;
-					&:hover{
-						transform: rotateY(360deg);
-					}
+					
 				}
 				p{
 					height: 24px;

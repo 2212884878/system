@@ -113,12 +113,12 @@
 			}
 		},
 		mounted() {
-			if (sessionStorage.getItem("systemName") == 'undefined' || sessionStorage.getItem("systemName") == null ||
-				sessionStorage.getItem("systemName") == "") {
-				sessionStorage.setItem("systemName", this.$route.query.name);
+			if (localStorage.getItem("systemName") == 'undefined' || localStorage.getItem("systemName") == null ||
+				localStorage.getItem("systemName") == "") {
+				localStorage.setItem("systemName", this.$route.query.name);
 			}
 
-			this.systemName = sessionStorage.getItem("systemName");
+			this.systemName = localStorage.getItem("systemName");
 			this.height = document.documentElement.clientHeight - 120;
 			const that = this;
 			window.onresize = function temp() {

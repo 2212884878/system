@@ -114,12 +114,12 @@
 			}
 		},
 		mounted() {
-			if (sessionStorage.getItem("UccnName") == 'undefined' || sessionStorage.getItem("UccnName") == null ||
-				sessionStorage.getItem("UccnName") == "") {
-				sessionStorage.setItem("UccnName", this.$route.query.name);
+			if (localStorage.getItem("UccnName") == 'undefined' || localStorage.getItem("UccnName") == null ||
+				localStorage.getItem("UccnName") == "") {
+				localStorage.setItem("UccnName", this.$route.query.name);
 			}
 
-			this.systemName = sessionStorage.getItem("UccnName");
+			this.systemName = localStorage.getItem("UccnName");
 			this.height = document.documentElement.clientHeight - 120;
 			const that = this;
 			window.onresize = function temp() {
