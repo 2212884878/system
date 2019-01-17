@@ -165,7 +165,7 @@
 				['image','video']
 			];
 			return {
-				importFileUrl: 'http://192.168.2.34:2600/staticResource/uploadFile', //上传图片地址
+				importFileUrl: 'http://101.201.101.138:2600/staticResource-mucon/uploadFile', //上传图片地址
 				status:false,
 				loading: false,
 				vuequillref: '', //富文本ref标识
@@ -181,6 +181,9 @@
 									} else {
 										this.quill.format('image', false);
 									}
+								},
+								'video':(value) => {
+									console.log(value)
 								}
 							}
 						}
@@ -244,7 +247,7 @@
 				if (res.code == 200) {
 					// 获取光标所在位置
 					let length = quill.getSelection().index;
-					this.$axios.get("http://192.168.2.34:2600/staticResource/selectFileById?id=" + res.data.id).then(res => { //获取图片地址
+					this.$axios.get("http://101.201.101.138:2600/staticResource-mucon/selectFileById?id=" + res.data.id).then(res => { //获取图片地址
 						if (res.data.code == 200) {
 							// 插入图片，res为服务器返回的图片链接地址
 							quill.insertEmbed(length, 'image', GetImages(res.data.data.fileName))
